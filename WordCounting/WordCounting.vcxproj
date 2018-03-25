@@ -77,6 +77,7 @@
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
       <PreprocessorDefinitions>_MBCS;%(PreprocessorDefinitions);_SCL_SECURE_NO_WARNINGS;_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(ProjectDir)include;</AdditionalIncludeDirectories>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -116,21 +117,26 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="cmd_analyse.cpp" />
-    <ClCompile Include="count.cpp" />
-    <ClCompile Include="count_char.cpp" />
+    <ClCompile Include="app\cmd_analyse.cpp" />
+    <ClCompile Include="app\count.cpp" />
+    <ClCompile Include="app\count_char.cpp" />
+    <ClCompile Include="app\count_word\count_word.cpp" />
+    <ClCompile Include="app\count_word\count_word_pool.cpp" />
+    <ClCompile Include="app\count_word\word.cpp" />
+    <ClCompile Include="app\test\test.cpp" />
+    <ClCompile Include="app\test\test_cmd_analyse.cpp" />
+    <ClCompile Include="app\test\test_count.cpp" />
+    <ClCompile Include="app\test\test_count_char.cpp" />
+    <ClCompile Include="app\traverse_file.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="test.cpp" />
-    <ClCompile Include="test_cmd_analyse.cpp" />
-    <ClCompile Include="test_count_char.cpp" />
-    <ClCompile Include="traverse_file.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="cmd_analyse.h" />
-    <ClInclude Include="count.h" />
-    <ClInclude Include="count_char.h" />
-    <ClInclude Include="test.h" />
-    <ClInclude Include="traverse_file.h" />
+    <ClInclude Include="include\cmd_analyse.h" />
+    <ClInclude Include="include\count.h" />
+    <ClInclude Include="include\count_char.h" />
+    <ClInclude Include="include\count_word.h" />
+    <ClInclude Include="include\test.h" />
+    <ClInclude Include="include\traverse_file.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

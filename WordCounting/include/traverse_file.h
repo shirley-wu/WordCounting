@@ -17,7 +17,6 @@ private:
 
 public:
 	TraverseFile(std::string dir);
-	bool begun();
 	bool valid();
 	std::string get_filepath();
 	void traverse();

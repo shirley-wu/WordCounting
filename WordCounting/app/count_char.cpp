@@ -13,6 +13,8 @@ CharCounter::CharCounter() {
 
 
 void CharCounter::count(char c) {
+	// TODO: È¥³ý=0 >127µÄ×Ö·û
+	// TODO: È¥³ý¿ØÖÆ×Ö·û
 	if (c == EOF) {
 		if (is_line) {
 			line_num++;
@@ -25,7 +27,7 @@ void CharCounter::count(char c) {
 			is_line = false;
 		}
 	}
-	else {
+	else if(c > 0 && c <= 127) {
 		char_num++;
 		is_line = true;
 	}

@@ -2,7 +2,9 @@
 #include <fstream>
 #include <string>
 
-#include "cmd_analyse.h"
+#define _DEBUG
+
+#include <cmd_analyse.h>
 #include "traverse_file.h"
 #include "count.h"
 #include "test.h"
@@ -31,22 +33,27 @@ int main(int argc, char **argv) {
 
 		while (traverse.valid()) {
 			traverse.traverse();
-			cout << traverse.get_filepath() << endl;
 			fstream in;
 			in.open(traverse.get_filepath());
+#ifdef _DEBUG
+			cout << traverse.get_filepath() << endl;
 			if (in.bad()) {
 				cout << traverse.get_filepath() << " bad" << endl;
 				cin.get();
 			}
+#endif
 			counter.count(in);
 			in.close();
 		}
 
-		// ofstream result("result.txt");
-		// result << "char_number :" << counter.get_char_num() << endl;
-		// result << "line_number :" << counter.get_line_num() << endl;
+#ifdef _DEBUG
 		cout << "char_number :" << counter.get_char_num() << endl;
 		cout << "line_number :" << counter.get_line_num() << endl;
+#else
+		ofstream result("result.txt");
+		result << "char_number :" << counter.get_char_num() << endl;
+		result << "line_number :" << counter.get_line_num() << endl;
+#endif
 
 	}
 

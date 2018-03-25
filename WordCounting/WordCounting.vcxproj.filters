@@ -18,42 +18,57 @@
     <ClCompile Include="main.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="cmd_analyse.cpp">
+    <ClCompile Include="app\cmd_analyse.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="test_cmd_analyse.cpp">
+    <ClCompile Include="app\count.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="test.cpp">
+    <ClCompile Include="app\count_char.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="traverse_file.cpp">
+    <ClCompile Include="app\traverse_file.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="count_char.cpp">
+    <ClCompile Include="app\count_word\count_word.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="test_count_char.cpp">
+    <ClCompile Include="app\count_word\count_word_pool.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="count.cpp">
+    <ClCompile Include="app\count_word\word.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="app\test\test.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="app\test\test_cmd_analyse.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="app\test\test_count.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="app\test\test_count_char.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="cmd_analyse.h">
+    <ClInclude Include="include\cmd_analyse.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="test.h">
+    <ClInclude Include="include\count.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="traverse_file.h">
+    <ClInclude Include="include\count_char.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="count_char.h">
+    <ClInclude Include="include\count_word.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="count.h">
+    <ClInclude Include="include\test.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\traverse_file.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

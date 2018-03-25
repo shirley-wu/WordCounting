@@ -6,6 +6,7 @@
 using namespace std;
 
 bool test_count(string &msg) {
+	/*
 	bool if_pass;
 	string test_name;
 	string str;
@@ -66,6 +67,6 @@ bool test_count(string &msg) {
 		msg = "Pass test " + test_name;
 
 	} while (0);
-
+	*/
 	return true;
 }

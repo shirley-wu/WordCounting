@@ -2,11 +2,13 @@
 #include <istream>
 
 #include "count_char.h"
+#include "count_word.h"
 
 class Counter {
 
 private:
 	CharCounter cc;
+	WordCounter wc;
 
 public:
 	bool count(std::istream& in);

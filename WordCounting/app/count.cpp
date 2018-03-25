@@ -10,6 +10,7 @@ bool Counter::count(istream& in) {
 	do{
 		c = in.get();
 		cc.count(c);
+		wc.count(c);
 	}while (c != EOF);
 
 	return true;
