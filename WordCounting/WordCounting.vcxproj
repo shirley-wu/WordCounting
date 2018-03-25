@@ -120,10 +120,12 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="test.cpp" />
     <ClCompile Include="test_cmd_analyse.cpp" />
+    <ClCompile Include="traverse_file.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cmd_analyse.h" />
     <ClInclude Include="test.h" />
+    <ClInclude Include="traverse_file.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
