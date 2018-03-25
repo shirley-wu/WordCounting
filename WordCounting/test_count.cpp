@@ -1,19 +1,17 @@
 #include <string>
 #include <sstream>
 
-#include "count_char.h"
+#include "count.h"
 
 using namespace std;
 
-
-bool test_count_char(string &msg) {
-	/*
+bool test_count(string &msg) {
 	bool if_pass;
 	string test_name;
 	string str;
 	istringstream in;
 
-	test_name = "count_char";
+	test_name = "count";
 
 	do {
 		msg = "Do not pass test " + test_name;
@@ -68,6 +66,6 @@ bool test_count_char(string &msg) {
 		msg = "Pass test " + test_name;
 
 	} while (0);
-	*/
+
 	return true;
 }

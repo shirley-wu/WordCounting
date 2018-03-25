@@ -117,6 +117,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="cmd_analyse.cpp" />
+    <ClCompile Include="count.cpp" />
     <ClCompile Include="count_char.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="test.cpp" />
@@ -126,6 +127,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cmd_analyse.h" />
+    <ClInclude Include="count.h" />
     <ClInclude Include="count_char.h" />
     <ClInclude Include="test.h" />
     <ClInclude Include="traverse_file.h" />

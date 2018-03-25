@@ -4,7 +4,7 @@
 
 #include "cmd_analyse.h"
 #include "traverse_file.h"
-#include "count_char.h"
+#include "count.h"
 #include "test.h"
 
 using namespace std;
@@ -26,7 +26,7 @@ int main(int argc, char **argv) {
 		test_all(msg);
 	}
 	else {
-		CharCounter counter;
+		Counter counter;
 		TraverseFile traverse(dir);
 
 		while (traverse.valid()) {

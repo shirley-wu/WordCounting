@@ -48,7 +48,6 @@ void TraverseFile::traverse(){
 		}
 		else if (s.empty()) {
 			handle = -1;
-			cout << "problem" << endl;
 			return;
 		}
 		else{
