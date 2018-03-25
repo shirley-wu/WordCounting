@@ -30,6 +30,12 @@
     <ClCompile Include="traverse_file.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="count_char.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="test_count_char.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cmd_analyse.h">
@@ -39,6 +45,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="traverse_file.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="count_char.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

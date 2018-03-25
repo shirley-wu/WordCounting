@@ -24,33 +24,52 @@ bool test_cmd_analyse(string &msg) {
 
 		// no argument
 		argc = 0;
-		if_valid = analyse_cmd(argc, argv, dir, if_test);
-		if (if_valid == false && if_test == false);
+		if_valid = analyse_cmd(argc, argv, if_test, dir);
+		if (if_valid == false && if_test == false && dir == "");
 		else {
 			msg += "<no argument>";
 			break;
 		}
 
-		// inif_valid argument
+		// invalid argument
 		argc = 2;
 		strcpy(argv[0], "adfla");
-		strcpy(argv[1], "-t");
-		if_valid = analyse_cmd(argc, argv, dir, if_test);
-		if (if_valid == false && if_test == true);
+		strcpy(argv[1], "-st");
+		if_valid = analyse_cmd(argc, argv, if_test, dir);
+		if (if_valid == false && if_test == false && dir == "");
 		else {
 			msg += "<invalid argument>";
 			break;
 		}
 
-		// if_valid argument
+		// incomplete argument
+		argc = 3;
+		strcpy(argv[2], "-d");
+		if_valid = analyse_cmd(argc, argv, if_test, dir);
+		if (if_valid == false && if_test == false && dir == "");
+		else {
+			msg += "<incomplete argument>";
+			break;
+		}
+
+		// only d
 		argc = 4;
 		char test_dir[20] = ".\\user";
-		strcpy(argv[2], "-d");
 		strcpy(argv[3], test_dir);
-		if_valid = analyse_cmd(argc, argv, dir, if_test);
-		if (if_valid == true && if_test == true && dir == test_dir);
+		if_valid = analyse_cmd(argc, argv, if_test, dir);
+		if (if_valid == true && if_test == false && dir == test_dir);
 		else {
-			msg += "<valid argument>";
+			msg += "<only d>";
+			break;
+		}
+
+		// only d
+		argc = 3;
+		strcpy(argv[2], "-t");
+		if_valid = analyse_cmd(argc, argv, if_test, dir);
+		if (if_valid == true && if_test == true && dir == "");
+		else {
+			msg += "<only t>";
 			break;
 		}
 

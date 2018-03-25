@@ -117,13 +117,16 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="cmd_analyse.cpp" />
+    <ClCompile Include="count_char.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="test.cpp" />
     <ClCompile Include="test_cmd_analyse.cpp" />
+    <ClCompile Include="test_count_char.cpp" />
     <ClCompile Include="traverse_file.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cmd_analyse.h" />
+    <ClInclude Include="count_char.h" />
     <ClInclude Include="test.h" />
     <ClInclude Include="traverse_file.h" />
   </ItemGroup>

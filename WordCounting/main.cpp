@@ -1,9 +1,10 @@
 #include <iostream>
+#include <fstream>
 #include <string>
-#include <io.h>
 
 #include "cmd_analyse.h"
 #include "traverse_file.h"
+#include "count_char.h"
 #include "test.h"
 
 using namespace std;
@@ -12,7 +13,7 @@ int main(int argc, char **argv) {
 	string dir;
 	bool if_test;
 
-	if (!analyse_cmd(argc, argv, dir, if_test)) {
+	if (!analyse_cmd(argc, argv, if_test, dir)) {
 		cout << "Invalid command argument";
 		return 1;
 	}
@@ -25,12 +26,28 @@ int main(int argc, char **argv) {
 		test_all(msg);
 	}
 	else {
+		CharCounter counter;
 		TraverseFile traverse(dir);
-		traverse.begin();
+
 		while (traverse.valid()) {
+			traverse.traverse();
 			cout << traverse.get_filepath() << endl;
-			traverse.next();
+			fstream in;
+			in.open(traverse.get_filepath());
+			if (in.bad()) {
+				cout << traverse.get_filepath() << " bad" << endl;
+				cin.get();
+			}
+			counter.count(in);
+			in.close();
 		}
+
+		// ofstream result("result.txt");
+		// result << "char_number :" << counter.get_char_num() << endl;
+		// result << "line_number :" << counter.get_line_num() << endl;
+		cout << "char_number :" << counter.get_char_num() << endl;
+		cout << "line_number :" << counter.get_line_num() << endl;
+
 	}
 
 	return 0;

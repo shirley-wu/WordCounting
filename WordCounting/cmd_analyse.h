@@ -1,4 +1,4 @@
 #pragma once
 #include <string>
 
-bool analyse_cmd(int argc, char **argv, std::string &dir, bool &if_test);
+bool analyse_cmd(int argc, char **argv, bool &if_test, std::string &dir);
