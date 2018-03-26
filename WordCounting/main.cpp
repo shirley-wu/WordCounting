@@ -51,6 +51,7 @@ int main(int argc, char **argv) {
 		result << "char_number :" << counter.get_char_num() << endl;
 		result << "line_number :" << counter.get_line_num() << endl;
 		result << "word_number :" << counter.get_word_num() << endl;
+		cout << "\nthe top ten frequency of word :\n";
 		for (int i = 0; i < 10; i++) {
 			int num;
 			string s;
@@ -58,12 +59,13 @@ int main(int argc, char **argv) {
 			if (num <= 0) break;
 			result << s << '\t' << num << endl;
 		}
+		cout << "\n\nthe top ten frequency of phrase :";
 		for (int i = 0; i < 10; i++) {
 			int num;
 			string s;
 			num = counter.get_max_phrase(i, s);
 			if (num <= 0) break;
-			result << s << '\t' << num << endl;
+			result << s << "\t\t" << num << endl;
 		}
 
 	}

@@ -136,7 +136,7 @@ void add_phrase(string exp1, string exp2) {
 }
 
 
-int get_max_word(int i, string &e){
+int _get_max_word(int i, string &e){
 	if (i < 0 || i >= 10 || wmax[i] == NULL) {
 		return -1;
 	}
@@ -147,7 +147,7 @@ int get_max_word(int i, string &e){
 }
 
 
-int get_max_phrase(int i, string &e) {
+int _get_max_phrase(int i, string &e) {
 	if (i < 0 || i >= 10 || pmax[i] == NULL) {
 		return -1;
 	}

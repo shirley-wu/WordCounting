@@ -43,10 +43,10 @@ void WordCounter::count(char c) {
 
 
 int WordCounter::get_max_word(int i, string &e) {
-	return get_max_word(i, e);
+	return _get_max_word(i, e);
 }
 
 
 int WordCounter::get_max_phrase(int i, string &e) {
-	return get_max_phrase(i, e);
+	return _get_max_phrase(i, e);
 }
