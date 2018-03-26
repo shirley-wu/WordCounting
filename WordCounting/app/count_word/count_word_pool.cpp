@@ -1,4 +1,5 @@
 #include "count_word.h"
+#include "count_word/count_word_pool.h"
 
 using namespace std;
 

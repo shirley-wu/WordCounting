@@ -71,5 +71,11 @@
     <ClInclude Include="include\traverse_file.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="include\count_word\count_word_pool.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\count_word\word.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

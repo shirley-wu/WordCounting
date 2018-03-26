@@ -2,6 +2,7 @@
 #include <ctype.h>
 
 #include "count_word.h"
+#include "count_word/word.h"
 
 using namespace std;
 
