@@ -24,7 +24,12 @@ string TraverseFile::get_filepath() {
 long TraverseFile::findfirst(string path, long& local_handle, _finddata_t* ptr) {
 	long status;
 	local_handle = _findfirst((path + "\\*").c_str(), ptr);
+	if (local_handle == -1) return -1;
 	status = _findnext(local_handle, ptr);
+	if (status == -1) {
+		local_handle = -1;
+		return -1;
+	}
 	status = _findnext(local_handle, ptr);
 	return status;
 }

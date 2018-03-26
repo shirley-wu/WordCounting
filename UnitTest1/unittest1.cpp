@@ -9,9 +9,10 @@ namespace UnitTest1
 	{
 	public:
 		
-		TEST_METHOD(TestMethod1)
+		TEST_METHOD(TestCertain)
 		{
-			// TODO: 在此输入测试代码
+			int i = 0;
+			Assert::AreEqual(i, 0);
 		}
 
 	};
