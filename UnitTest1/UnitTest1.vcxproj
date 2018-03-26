@@ -165,6 +165,7 @@
     </ClCompile>
     <ClCompile Include="test_count_char.cpp" />
     <ClCompile Include="test_count_word.cpp" />
+    <ClCompile Include="test_word_pool.cpp" />
     <ClCompile Include="unittest1.cpp" />
   </ItemGroup>
   <ItemGroup>

@@ -12,6 +12,7 @@ CharCounter::CharCounter() {
 
 
 void CharCounter::count(char c) {
+	// TODO: different from official
 	if (c == EOF) {
 		line_num++;
 	}

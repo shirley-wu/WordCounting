@@ -29,8 +29,8 @@ void WordCounter::count(char c) {
 			exp += c;
 		}
 		else {
-			add_word(exp);
-			if (pre != "") add_phrase(pre, exp);
+			pool.add_word(exp);
+			if (pre != "") pool.add_phrase(pre, exp);
 			pre = exp;
 			exp = ""; 
 		}
@@ -43,10 +43,10 @@ void WordCounter::count(char c) {
 
 
 int WordCounter::get_max_word(int i, string &e) {
-	return _get_max_word(i, e);
+	return pool.get_max_word(i, e);
 }
 
 
 int WordCounter::get_max_phrase(int i, string &e) {
-	return _get_max_phrase(i, e);
+	return pool.get_max_phrase(i, e);
 }

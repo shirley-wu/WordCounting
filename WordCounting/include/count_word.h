@@ -11,6 +11,7 @@ private:
 	int num = 0;
 	std::string pre = "";
 	std::string exp = "";
+	WordPool pool;
 
 public:
 	void count(char c);

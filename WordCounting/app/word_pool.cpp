@@ -2,38 +2,8 @@
 
 using namespace std;
 
-const int hash_size = 100;
 
-struct word {
-	string format;
-	string exp;
-	word(string f = "", string e = "") { format = f; exp = e; }
-	void update(string e) { if (e < exp) exp = e; }
-	bool operator<(const word& w) const { return format < w.format; }
-	bool operator==(const word& w) const { return format == w.format; }
-};
-
-struct wnode {
-	word w;
-	int count;
-	wnode *next;
-	wnode(string f = "", string e = "") { w = word(f, e); count = 0; next = NULL; }
-};
-wnode *wtable[hash_size] = { NULL };
-wnode *wmax[10] = { NULL };
-
-struct pnode {
-	word w1;
-	word w2;
-	int count;
-	pnode *next;
-	pnode(string f1 = "", string e1 = "", string f2 = "", string e2 = "") { w1 = word(f1, e1); w2 = word(f2, e2); count = 0; next = NULL; }
-};
-pnode *ptable[hash_size] = { NULL };
-pnode *pmax[10] = { NULL };
-
-
-int my_hash(std::string s) {
+int WordPool::my_hash(std::string s) {
 	unsigned long h = 0;
 	unsigned long g;
 	for (int i = 0; i < s.size(); i++) {
@@ -48,7 +18,7 @@ int my_hash(std::string s) {
 }
 
 
-string exp_to_format(string exp) {
+string WordPool::exp_to_format(string exp) {
 	string word = "";
 	int j = exp.size() - 1;
 	while (isdigit(exp[j])) j--;
@@ -57,7 +27,7 @@ string exp_to_format(string exp) {
 }
 
 
-void add_word(string exp) {
+void WordPool::add_word(string exp) {
 	string format = exp_to_format(exp);
 
 	int key = my_hash(format);
@@ -71,7 +41,7 @@ void add_word(string exp) {
 	else p = wtable[key] = new wnode(format, exp);
 
 	p->count++;
-	p->w.update(exp);
+	if(exp < p->w.exp) p->w.exp = exp;
 
 	for (int i = 0; i < 10; i++) {
 		if (wmax[i] == NULL || wmax[i] == p) {
@@ -95,7 +65,7 @@ void add_word(string exp) {
 }
 
 
-void add_phrase(string exp1, string exp2) {
+void WordPool::add_phrase(string exp1, string exp2) {
 	string f1 = exp_to_format(exp1);
 	string f2 = exp_to_format(exp2);
 	string f = f1 + " " + f2;
@@ -111,8 +81,10 @@ void add_phrase(string exp1, string exp2) {
 	else p = ptable[key] = new pnode(f1, exp1, f2, exp2);
 
 	p->count++;
-	p->w1.update(exp1);
-	p->w2.update(exp2);
+	if (exp1 < p->w1.exp || (exp1 == p->w1.exp && exp2 < p->w2.exp)) {
+		p->w1.exp = exp1;
+		p->w2.exp = exp2;
+	}
 
 	for (int i = 0; i < 10; i++) {
 		if (pmax[i] == NULL || pmax[i] == p) {
@@ -136,7 +108,7 @@ void add_phrase(string exp1, string exp2) {
 }
 
 
-int _get_max_word(int i, string &e){
+int WordPool::get_max_word(int i, string &e){
 	if (i < 0 || i >= 10 || wmax[i] == NULL) {
 		return -1;
 	}
@@ -147,12 +119,31 @@ int _get_max_word(int i, string &e){
 }
 
 
-int _get_max_phrase(int i, string &e) {
+int WordPool::get_max_phrase(int i, string &e) {
 	if (i < 0 || i >= 10 || pmax[i] == NULL) {
 		return -1;
 	}
 	else {
 		e = pmax[i]->w1.exp + " " + pmax[i]->w2.exp;
 		return pmax[i]->count;
+	}
+}
+
+
+WordPool::WordPool() {
+	for (int i = 0; i < hash_size; i++) {
+		wtable[i] = NULL;
+		ptable[i] = NULL;
+	}
+	for (int i = 0; i < 10; i++) {
+		wmax[i] = NULL;
+		pmax[i] = NULL;
+	}
+}
+
+WordPool::~WordPool() {
+	for (int i = 0; i < hash_size; i++) {
+		if (wtable[i]) delete wtable[i];
+		if (ptable[i]) delete ptable[i];
 	}
 }
