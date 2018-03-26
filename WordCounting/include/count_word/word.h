@@ -20,3 +20,6 @@ public:
 	void affix(char c);
 
 };
+
+
+std::string exp_to_word(std::string exp);

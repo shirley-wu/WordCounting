@@ -2,7 +2,7 @@
 #include <fstream>
 #include <string>
 
-#define _DEBUG
+#define _MY_DEBUG
 
 #include <cmd_analyse.h>
 #include "traverse_file.h"
@@ -35,7 +35,7 @@ int main(int argc, char **argv) {
 			traverse.traverse();
 			fstream in;
 			in.open(traverse.get_filepath());
-#ifdef _DEBUG
+#ifdef _MY_DEBUG
 			cout << traverse.get_filepath() << endl;
 			if (in.bad()) {
 				cout << traverse.get_filepath() << " bad" << endl;
@@ -46,7 +46,7 @@ int main(int argc, char **argv) {
 			in.close();
 		}
 
-#ifdef _DEBUG
+#ifdef _MY_DEBUG
 		cout << "char_number :" << counter.get_char_num() << endl;
 		cout << "line_number :" << counter.get_line_num() << endl;
 #else
