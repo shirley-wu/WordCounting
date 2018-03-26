@@ -12,14 +12,15 @@ private:
 
 public:
 	Word();
+	void clear();
+
 	bool get_isvalid();
 	bool get_iscomplete();
+
 	std::string get_word();
 	std::string get_exp();
-	void clear();
+
 	void affix(char c);
+	void update(string e);
 
 };
-
-
-std::string exp_to_word(std::string exp);

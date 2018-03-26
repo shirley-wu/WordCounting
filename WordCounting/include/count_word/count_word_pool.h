@@ -43,31 +43,18 @@ private:
 #endif
 #ifdef _WORD_COUNTER_POOL_HASH
 
-	class Node {
-
-	private:
-		std::string word;
-		std::string exp;
-		int count;
-
-	public:
-		Node * next;
-
-		Node(std::string w, std::string e);
-		std::string get_word();
-		std::string get_exp();
-		int get_count();
-		void update(std::string e);
-		void add();
-
-	};
-
+	template<class T>
 	class HashTable {
 
 	private:
 		static const int size = 100;
 		int hash(std::string s);
-		Node * arr[size];
+
+		typedef struct node {
+			<T> arr[size];
+			struct node* next;
+		} Node arr[size];
+
 		void release(Node * p);
 
 	public:

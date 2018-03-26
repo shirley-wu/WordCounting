@@ -72,12 +72,6 @@ int WordCounterPool::Node::get_count() {
 }
 
 
-void WordCounterPool::Node::update(string s) {
-	assert(exp_to_word(s) == word);
-	exp = exp < s ? exp : s;
-}
-
-
 void WordCounterPool::Node::add() {
 	count++;
 }
@@ -125,13 +119,17 @@ WordCounterPool::Node * WordCounterPool::HashTable::get_node(string w, string e)
 	int key = hash(w);
 	WordCounterPool::Node * p = arr[key];
 	if (p) {
-		while (p->next) {
-			if (p->get_word() == w) return p;
-			else p = p->next;
+		while (p->get_word() != w) {
+			if (p->next) p = p->next;
+			else {
+				p = p->next = new Node(w, e);
+				break;
+			}
 		}
-		p = p->next = new Node(w, e);
 	}
-	p = arr[key] = new Node(w, e);
+	else {
+		p = arr[key] = new Node(w, e);
+	}
 	return p;
 }
 

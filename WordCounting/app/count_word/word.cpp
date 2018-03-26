@@ -1,5 +1,6 @@
 #include <iostream>
 #include <ctype.h>
+#include <assert.h>
 
 #include "count_word.h"
 #include "count_word/word.h"
@@ -83,4 +84,10 @@ void Word::affix(char c) {
 			is_complete = true;
 		}
 	}
+}
+
+
+void Word::update(string s) {
+	assert(exp_to_word(s) == word);
+	exp = exp < s ? exp : s;
 }
