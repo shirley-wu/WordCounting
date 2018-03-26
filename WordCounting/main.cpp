@@ -47,13 +47,27 @@ int main(int argc, char **argv) {
 		}
 
 #ifdef _MY_DEBUG
-		cout << "char_number :" << counter.get_char_num() << endl;
-		cout << "line_number :" << counter.get_line_num() << endl;
+		ostream& result = cout;
 #else
 		ofstream result("result.txt");
+#endif
 		result << "char_number :" << counter.get_char_num() << endl;
 		result << "line_number :" << counter.get_line_num() << endl;
-#endif
+		result << "word_number :" << counter.get_word_num() << endl;
+		for (int i = 0; i < 10; i++) {
+			int num;
+			string s;
+			num = counter.get_max_word(i, s);
+			if (num <= 0) break;
+			result << s << '\t' << num << endl;
+		}
+		for (int i = 0; i < 10; i++) {
+			int num;
+			string s;
+			num = counter.get_max_phrase(i, s);
+			if (num <= 0) break;
+			result << s << '\t' << num << endl;
+		}
 
 	}
 

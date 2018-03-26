@@ -11,6 +11,7 @@ void WordCounter::count(char c) {
 		cout << "exp:\t" << w.get_exp() << endl;
 		cout << "word:\t" << w.get_word() << endl;
 
+		num++;
 		pool.add_word(w);
 		if (prew.get_iscomplete()) {
 			pool.add_phrase(prew, w);
@@ -23,4 +24,19 @@ void WordCounter::count(char c) {
 		prew.clear();
 		w.clear();
 	}
+}
+
+
+int WordCounter::get_word_num() {
+	return num;
+}
+
+
+int WordCounter::get_max_word(int i, string &e) {
+	return pool.get_max_word(i, e);
+}
+
+
+int WordCounter::get_max_phrase(int i, string &e) {
+	return pool.get_max_phrase(i, e);
 }
