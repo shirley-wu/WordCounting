@@ -13,26 +13,6 @@ Word::Word() {
 }
 
 
-bool Word::get_isvalid() {
-	return is_valid;
-}
-
-
-bool Word::get_iscomplete() {
-	return is_complete;
-}
-
-
-string Word::get_word() {
-	return word;
-}
-
-
-string Word::get_exp() {
-	return exp;
-}
-
-
 void Word::clear() {
 	is_valid = false;
 	is_complete = false;
@@ -87,7 +67,7 @@ void Word::affix(char c) {
 }
 
 
-void Word::update(string s) {
-	assert(exp_to_word(s) == word);
-	exp = exp < s ? exp : s;
+void Word::update(Word w) {
+	assert(word == w.word);
+	exp = exp < w.exp ? exp : w.exp;
 }

@@ -33,9 +33,6 @@
     <ClCompile Include="app\count_word\count_word.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="app\count_word\count_word_pool.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="app\count_word\word.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
@@ -49,6 +46,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="app\test\test_count_char.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="app\count_word\count_word_pool.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
