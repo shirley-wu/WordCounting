@@ -53,7 +53,7 @@ void WordPool::add_word(string exp) {
 			int cp = p->count;
 			if ((ci < cp) || (ci == cp && p->w < wmax[i]->w)) {
 				int j;
-				for (j = i + 1; j < 10 - 1; j++) if (wmax[j] == p) break;
+				for (j = i; j < 10 - 1; j++) if (wmax[j] == p) break;
 				for (; j > i; j--) {
 					wmax[j] = wmax[j - 1];
 				}
@@ -96,7 +96,7 @@ void WordPool::add_phrase(string exp1, string exp2) {
 			int cp = p->count;
 			if ((ci < cp) || (ci == cp && ((p->w1 < pmax[i]->w1) || (p->w1 == pmax[i]->w1 && p->w2 < pmax[i]->w2)))) {
 				int j;
-				for (j = i + 1; j < 10 - 1; j++) if (pmax[j] == p) break;
+				for (j = i; j < 10 - 1; j++) if (pmax[j] == p) break;
 				for (; j > i; j--) {
 					pmax[j] = pmax[j - 1];
 				}

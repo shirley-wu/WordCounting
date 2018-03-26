@@ -3,7 +3,7 @@
 
 #include <string>
 
-#include "../WordCounting/include/word_pool.h"
+#include "word_pool.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 using std::string;
@@ -16,7 +16,6 @@ namespace UnitTest1
 		WordPool pool;
 
 	public:
-
 
 		TEST_METHOD(TestEmpty) {
 			string s;

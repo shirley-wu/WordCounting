@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "CppUnitTest.h"
 
-#include "../WordCounting/include/count_char.h"
+#include "count_char.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 

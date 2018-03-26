@@ -3,7 +3,7 @@
 
 #include <string>
 
-#include "../WordCounting/include/count_word.h"
+#include "count_word.h"
 using std::string;
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
