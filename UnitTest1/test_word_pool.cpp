@@ -33,17 +33,17 @@ namespace UnitTest1
 			string s = "heLlo";
 			pool.add_word(s);
 			int n = pool.get_max_word(0, s);
-			Assert::AreEqual(s, string("heLlo"));
-			Assert::AreEqual(n, 1);
+			Assert::AreEqual(string("heLlo"), s);
+			Assert::AreEqual(1, n);
 			for (int i = 1; i < 10; i++) {
 				int n;
 				n = pool.get_max_word(i, s);
-				Assert::AreEqual(n, -1);
+				Assert::AreEqual(-1, n);
 			}
 			for (int i = 0; i < 10; i++) {
 				int n;
 				n = pool.get_max_phrase(i, s);
-				Assert::AreEqual(n, -1);
+				Assert::AreEqual(-1, n);
 			}
 		}
 

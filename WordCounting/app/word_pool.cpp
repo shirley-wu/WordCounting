@@ -3,10 +3,10 @@
 using namespace std;
 
 
-int WordPool::my_hash(std::string s) {
+int WordPool::my_hash(char *s) {
 	unsigned long h = 0;
 	unsigned long g;
-	for (int i = 0; i < s.size(); i++) {
+	for (int i = 0; s[i]; i++) {
 		h = (h << 4) + s[i];
 		g = h & 0xF0000000L;
 		if (g) {
@@ -18,22 +18,23 @@ int WordPool::my_hash(std::string s) {
 }
 
 
-string WordPool::exp_to_format(string exp) {
-	string word = "";
-	int j = exp.size() - 1;
-	while (isdigit(exp[j])) j--;
-	for (int i = 0; i <= j; i++) word += tolower(exp[i]);
-	return word;
+void WordPool::exp_to_format(char f[], const char e[]) {
+	int j = strlen(e) - 1;
+	while (isdigit(e[j])) j--;
+	for (int i = 0; i <= j; i++) f[i] = tolower(e[i]);
+	f[j+1] = 0;
 }
 
 
-void WordPool::add_word(string exp) {
-	string format = exp_to_format(exp);
+void WordPool::add_word(string e) {
+	char format[word_size];
+	const char * exp = e.c_str();
+	exp_to_format(format, exp);
 
 	int key = my_hash(format);
 	wnode * p = wtable[key];
 	if (p) {
-		while (p->w.format != format) {
+		while (strcmp(p->w.format, format) != 0) {
 			if (p->next) p = p->next;
 			else p = p->next = new wnode(format, exp);
 		}
@@ -41,7 +42,7 @@ void WordPool::add_word(string exp) {
 	else p = wtable[key] = new wnode(format, exp);
 
 	p->count++;
-	if(exp < p->w.exp) p->w.exp = exp;
+	if(strcmp(exp, p->w.exp) < 0) strcpy(p->w.exp, exp);
 
 	for (int i = 0; i < 10; i++) {
 		if (wmax[i] == NULL || wmax[i] == p) {
@@ -65,15 +66,24 @@ void WordPool::add_word(string exp) {
 }
 
 
-void WordPool::add_phrase(string exp1, string exp2) {
-	string f1 = exp_to_format(exp1);
-	string f2 = exp_to_format(exp2);
-	string f = f1 + " " + f2;
+void WordPool::add_phrase(string e1, string e2) {
+	const char * exp1 = e1.c_str();
+	const char * exp2 = e2.c_str();
+
+	char f1[word_size];
+	exp_to_format(f1, exp1);
+	char f2[word_size];
+	exp_to_format(f2, exp2);
+
+	char f[2 * word_size] = { 0 };
+	strcat(f, f1);
+	strcat(f, " ");
+	strcat(f, f2);
 
 	int key = my_hash(f);
 	pnode * p = ptable[key];
 	if (p) {
-		while (p->w1.format != f1 || p->w2.format != f2) {
+		while (strcmp(p->w1.format, f1) != 0 || strcmp(p->w2.format, f2) != 0) {
 			if (p->next) p = p->next;
 			else p = p->next = new pnode(f1, exp1, f2, exp2);
 		}
@@ -81,9 +91,9 @@ void WordPool::add_phrase(string exp1, string exp2) {
 	else p = ptable[key] = new pnode(f1, exp1, f2, exp2);
 
 	p->count++;
-	if (exp1 < p->w1.exp || (exp1 == p->w1.exp && exp2 < p->w2.exp)) {
-		p->w1.exp = exp1;
-		p->w2.exp = exp2;
+	if (strcmp(exp1, p->w1.exp) < 0 || (strcmp(exp1, p->w1.exp) == 0 && strcmp(exp2, p->w2.exp) < 0)) {
+		strcpy(p->w1.exp, exp1);
+		strcpy(p->w2.exp, exp2);
 	}
 
 	for (int i = 0; i < 10; i++) {
@@ -124,7 +134,7 @@ int WordPool::get_max_phrase(int i, string &e) {
 		return -1;
 	}
 	else {
-		e = pmax[i]->w1.exp + " " + pmax[i]->w2.exp;
+		e = string(pmax[i]->w1.exp) + " " + string(pmax[i]->w2.exp);
 		return pmax[i]->count;
 	}
 }
