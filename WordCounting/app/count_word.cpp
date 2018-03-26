@@ -29,6 +29,7 @@ void WordCounter::count(char c) {
 			exp += c;
 		}
 		else {
+			num++;
 			pool.add_word(exp);
 			if (pre != "") pool.add_phrase(pre, exp);
 			pre = exp;

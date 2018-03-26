@@ -12,7 +12,6 @@ using namespace std;
 
 int main(int argc, char **argv) {
 	string dir;
-	bool if_test;
 
 	if (argc > 1) dir = string(argv[1]);
 	
