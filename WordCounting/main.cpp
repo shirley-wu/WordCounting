@@ -19,9 +19,6 @@ int main(int argc, char **argv) {
 		cout << "Invalid command argument";
 		return 1;
 	}
-
-	// cout << "if_test: " << if_test << endl;
-	// cout << "dir: " << dir << endl;
 	
 	if (if_test) {
 		string msg;

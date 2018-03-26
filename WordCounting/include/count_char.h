@@ -5,7 +5,6 @@ class CharCounter {
 private:
 	int char_num;
 	int line_num;
-	bool is_line;
 
 public:
 	CharCounter();

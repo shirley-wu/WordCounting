@@ -8,28 +8,18 @@ using namespace std;
 CharCounter::CharCounter() {
 	char_num = 0;
 	line_num = 0;
-	is_line = false;
 }
 
 
 void CharCounter::count(char c) {
-	// TODO: È¥³ý=0 >127µÄ×Ö·û
-	// TODO: È¥³ý¿ØÖÆ×Ö·û
 	if (c == EOF) {
-		if (is_line) {
-			line_num++;
-			is_line = false;
-		}
+		line_num++;
 	}
 	else if( c == '\n') {
-		if (is_line) {
-			line_num++;
-			is_line = false;
-		}
+		line_num++;
 	}
-	else if(c > 0 && c <= 127) {
+	else if(c >= 32 && c <= 126) {
 		char_num++;
-		is_line = true;
 	}
 }
 

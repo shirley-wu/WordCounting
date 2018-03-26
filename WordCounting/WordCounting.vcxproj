@@ -120,14 +120,13 @@
     <ClCompile Include="app\cmd_analyse.cpp" />
     <ClCompile Include="app\count.cpp" />
     <ClCompile Include="app\count_char.cpp" />
-    <ClCompile Include="app\count_word\count_word.cpp" />
-    <ClCompile Include="app\count_word\count_word_pool.cpp" />
-    <ClCompile Include="app\count_word\word.cpp" />
+    <ClCompile Include="app\count_word.cpp" />
     <ClCompile Include="app\test\test.cpp" />
     <ClCompile Include="app\test\test_cmd_analyse.cpp" />
     <ClCompile Include="app\test\test_count.cpp" />
     <ClCompile Include="app\test\test_count_char.cpp" />
     <ClCompile Include="app\traverse_file.cpp" />
+    <ClCompile Include="app\word_pool.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -135,10 +134,9 @@
     <ClInclude Include="include\count.h" />
     <ClInclude Include="include\count_char.h" />
     <ClInclude Include="include\count_word.h" />
-    <ClInclude Include="include\count_word\count_word_pool.h" />
-    <ClInclude Include="include\count_word\word.h" />
     <ClInclude Include="include\test.h" />
     <ClInclude Include="include\traverse_file.h" />
+    <ClInclude Include="include\word_pool.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

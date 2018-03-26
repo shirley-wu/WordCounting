@@ -1,9 +1,7 @@
 #pragma once
 #include <string>
 
-#include "count_word/word.h"
-#include "count_word/count_word_pool.h"
-
+#include "word_pool.h"
 
 
 class WordCounter {
@@ -11,12 +9,12 @@ class WordCounter {
 private:
 
 	int num = 0;
-	Word w, prew;
-	WordCounterPool pool;
+	std::string pre = "";
+	std::string exp = "";
 
 public:
 	void count(char c);
-	int get_word_num();
+	int get_word_num() { return num; }
 	int get_max_word(int i, std::string& e);
 	int get_max_phrase(int j, std::string& e);
 
