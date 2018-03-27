@@ -9,11 +9,12 @@ extern long word_occupied;
 extern long word_link;
 extern long phrase_occupied;
 extern long phrase_link;
-extern const int HASH_SIZE;
 #endif
 
 
 const int WORD_SIZE = 100;
+const int PHRASE_SIZE = WORD_SIZE * 2 + 5;
+const int HASH_SIZE = 10000000;
 
 
 struct wnode {
@@ -32,10 +33,31 @@ struct wnode {
 };
 
 
+struct pnode {
+	const wnode *w1;
+	const wnode *w2;
+	char format[PHRASE_SIZE + 2];
+	int count = 0;
+	pnode *next = NULL;
+
+	pnode(const wnode *pw1, const wnode *pw2, const char * f) {
+		assert(strlen(f) <= PHRASE_SIZE + 2);
+		w1 = pw1;
+		w2 = pw2;
+		strcpy(format, f);
+	}
+	~pnode() { if (next) next->~pnode(); }
+};
+
+
 class WordPool {
 
 private:
 	void exp_to_format(char f[], const char e[]);
+	void word_sort_insert(const wnode * p);
+	void word_sort();
+	void phrase_sort_insert(const pnode * p);
+	void phrase_sort();
 
 public:
 	WordPool();

@@ -14,35 +14,16 @@ long phrase_link = 0;
 #endif
 
 
-const int PHRASE_SIZE = WORD_SIZE * 2 + 5;
-const int HASH_SIZE = 10000000;
-
-
-struct pnode {
-	const wnode *w1;
-	const wnode *w2;
-	char format[PHRASE_SIZE + 2];
-	int count = 0;
-	pnode *next = NULL;
-
-	pnode(const wnode *pw1, const wnode *pw2, const char * f) {
-		assert(strlen(f) <= PHRASE_SIZE + 2);
-		w1 = pw1;
-		w2 = pw2;
-		strcpy(format, f);
-	}
-	~pnode() { if (next) next->~pnode(); }
-};
-
-
 wnode *wtable[HASH_SIZE] = { NULL };
-wnode *wmax[10] = { NULL };
+const wnode *wmax[10] = { NULL };
 
 pnode *ptable[HASH_SIZE] = { NULL };
-pnode *pmax[10] = { NULL };
+const pnode *pmax[10] = { NULL };
 
 
 bool pool_occupied = false;
+bool word_sorted = false;
+bool phrase_sorted = false;
 
 
 int my_hash(const char *s) {
@@ -80,6 +61,8 @@ WordPool::~WordPool() {
 		if (ptable[i]) delete ptable[i];
 	}
 	pool_occupied = false;
+	word_sorted = false;
+	phrase_sorted = false;
 }
 
 
@@ -116,41 +99,8 @@ wnode * WordPool::add_word(const char * exp) {
 		word_occupied++;
 #endif
 	}
-	/*if (strlen(p->format) == 0) {
-		cout << "\nformat zero" << endl;
-		if (strlen(p->exp) == 0) {
-			cout << "exp also zero" << endl;
-		}
-		else cout << p->exp << endl;
-	}
-	else if (strlen(p->exp) == 0) {
-		cout << "\nexp zero" << endl;
-		cout << p->format << endl;
-	}
-	else cout << p->format << " ";*/
-
 	p->count++;
-	if(strcmp(p->exp, exp) > 0) strcpy(p->exp, exp);
-
-	for (int i = 0; i < 10; i++) {
-		if (wmax[i] == NULL || wmax[i] == p) {
-			wmax[i] = p;
-			break;
-		}
-		else {
-			int ci = wmax[i]->count;
-			int cp = p->count;
-			if ((ci < cp) || (ci == cp && strcmp(p->exp, wmax[i]->exp) < 0)) {
-				int j;
-				for (j = i; j < 10 - 1; j++) if (wmax[j] == p) break;
-				for (; j > i; j--) {
-					wmax[j] = wmax[j - 1];
-				}
-				wmax[i] = p;
-				break;
-			}
-		}
-	}
+	if (strcmp(p->exp, exp) > 0) strcpy(p->exp, exp);
 
 	return p;
 }
@@ -183,9 +133,57 @@ void WordPool::add_phrase(const wnode * pw1, const wnode * pw2) {
 		phrase_occupied++;
 #endif
 	}
-
 	p->count++;
+}
 
+
+void WordPool::word_sort_insert(const wnode * p) {
+	for (int i = 0; i < 10; i++) {
+		if (wmax[i] == NULL || wmax[i] == p) {
+			wmax[i] = p;
+			break;
+		}
+		else {
+			int ci = wmax[i]->count;
+			int cp = p->count;
+			if ((ci < cp) || (ci == cp && strcmp(p->exp, wmax[i]->exp) < 0)) {
+				int j;
+				for (j = i; j < 10 - 1; j++) if (wmax[j] == p) break;
+				for (; j > i; j--) {
+					wmax[j] = wmax[j - 1];
+				}
+				wmax[i] = p;
+				break;
+			}
+		}
+	}
+}
+
+
+void WordPool::word_sort() {
+	const wnode * p;
+	for (int i = 0; i < HASH_SIZE; i++) {
+		for (p = wtable[i]; p; p = p->next) word_sort_insert(p);
+	}
+}
+
+
+int WordPool::get_max_word(int i, string &e){
+	if (word_sorted == false) {
+		word_sort();
+		word_sorted = true;
+	}
+	if (i < 0 || i >= 10 || wmax[i] == NULL) {
+		return -1;
+	}
+	else {
+		e = wmax[i]->exp;
+		return wmax[i]->count;
+	}
+}
+
+
+void WordPool::phrase_sort_insert(const pnode * p) {
 	for (int i = 0; i < 10; i++) {
 		if (pmax[i] == NULL || pmax[i] == p) {
 			pmax[i] = p;
@@ -208,18 +206,18 @@ void WordPool::add_phrase(const wnode * pw1, const wnode * pw2) {
 }
 
 
-int WordPool::get_max_word(int i, string &e){
-	if (i < 0 || i >= 10 || wmax[i] == NULL) {
-		return -1;
-	}
-	else {
-		e = wmax[i]->exp;
-		return wmax[i]->count;
+void WordPool::phrase_sort() {
+	const pnode * p;
+	for (int i = 0; i < HASH_SIZE; i++) {
+		for (p = ptable[i]; p; p = p->next) phrase_sort_insert(p);
 	}
 }
 
-
 int WordPool::get_max_phrase(int i, string &e) {
+	if (phrase_sorted == false) {
+		phrase_sort();
+		phrase_sorted = true;
+	}
 	if (i < 0 || i >= 10 || pmax[i] == NULL) {
 		return -1;
 	}
