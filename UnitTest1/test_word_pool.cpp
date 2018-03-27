@@ -65,14 +65,14 @@ namespace UnitTest1
 			w11 = pool.add_word("hi");
 			w12 = pool.add_word("Hi");
 			w21 = pool.add_word("hellO");
-			w22 = pool.add_word("HelLo");
+			w22 = pool.add_word("helLo");
 			w31 = pool.add_word("Him");
 			w32 = pool.add_word("hiM");
 			int n;
 			string s;
 			n = pool.get_max_word(0, s);
 			Assert::AreEqual(2, n);
-			Assert::AreEqual(string("HelLo"), s);
+			Assert::AreEqual(string("helLo"), s);
 			n = pool.get_max_word(1, s);
 			Assert::AreEqual(2, n);
 			Assert::AreEqual(string("Hi"), s);

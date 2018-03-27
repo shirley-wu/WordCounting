@@ -146,7 +146,7 @@ void WordPool::word_sort_insert(const wnode * p) {
 		else {
 			int ci = wmax[i]->count;
 			int cp = p->count;
-			if ((ci < cp) || (ci == cp && strcmp(p->exp, wmax[i]->exp) < 0)) {
+			if ((ci < cp) || (ci == cp && strcmp(p->format, wmax[i]->format) < 0)) {
 				int j;
 				for (j = i; j < 10 - 1; j++) if (wmax[j] == p) break;
 				for (; j > i; j--) {
