@@ -28,11 +28,10 @@ void WordPool::exp_to_format(char f[], const char e[]) {
 }
 
 
-void WordPool::add_word(string e) {
-	if (e.size() > WORD_SIZE) return;
+void WordPool::add_word(const char * exp) {
+	if (strlen(exp) > WORD_SIZE) return;
 
 	char format[WORD_SIZE + 2];
-	const char * exp = e.c_str();
 	exp_to_format(format, exp);
 
 	int key = my_hash(format);
@@ -72,13 +71,10 @@ void WordPool::add_word(string e) {
 }
 
 
-void WordPool::add_phrase(string e1, string e2) {
-	if (e1.size() > WORD_SIZE || e2.size() > WORD_SIZE) {
+void WordPool::add_phrase(const char* exp1, const char *exp2) {
+	if (strlen(exp1) > WORD_SIZE || strlen(exp2) > WORD_SIZE) {
 		return;
 	}
-
-	const char * exp1 = e1.c_str();
-	const char * exp2 = e2.c_str();
 
 	char f1[WORD_SIZE];
 	exp_to_format(f1, exp1);

@@ -9,8 +9,12 @@ class WordCounter {
 private:
 
 	int num = 0;
-	std::string pre = "";
-	std::string exp = "";
+	char pre[WORD_SIZE + 2];
+
+	char exp[WORD_SIZE + 2];
+	int exp_len = 0;
+	bool overflow = false;
+
 	WordPool pool;
 
 public:

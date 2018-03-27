@@ -16,29 +16,41 @@ bool iscontinuer(char c) {
 
 
 void WordCounter::count(char c) {
-	if (exp.size() < 4) {
+	if (overflow) {
+		if (!iscontinuer(c)) {
+			exp_len = 0;
+			overflow = false;
+		}
+	}
+	else if (exp_len < 4) {
 		if (isbeginner(c)) {
-			exp += c;
+			exp[exp_len++] = c;
 		}
 		else {
-			exp = "";
+			exp_len = 0;
 		}
 	}
 	else {
 		if (iscontinuer(c)) {
-			exp += c;
+			if (exp_len > WORD_SIZE) {
+				overflow = true;
+			}
+			else exp[exp_len++] = c;
 		}
 		else {
 			num++;
+			exp[exp_len] = 0;
 			pool.add_word(exp);
-			if (pre != "") pool.add_phrase(pre, exp);
-			pre = exp;
-			exp = ""; 
+			if (strlen(pre) > 0) pool.add_phrase(pre, exp);
+			strcpy(pre, exp);
+			exp_len = 0;
 		}
 	}
 	if (c == EOF) {
-		pre = "";
-		exp = "";
+		pre[0] = 0;
+		exp[0] = 0;
+		exp_len = 0;
+		overflow = false;
 	}
 }
 

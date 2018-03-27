@@ -92,5 +92,23 @@ namespace UnitTest1
 			Assert::AreEqual(-1, n);
 		}
 
+		TEST_METHOD(TestLongWord) {
+			string s;
+			for (int i = 0; i < WORD_SIZE + 1; i++) s += 'h';
+			count(s);
+			int n = counter.get_max_word(0, s);
+			Assert::AreEqual(-1, n);
+		}
+
+		TEST_METHOD(TestLongPhrase) {
+			string s1, s2, s;
+			for (int i = 0; i < WORD_SIZE / 2; i++) s1 += 'a';
+			for (int i = 0; i < WORD_SIZE + 4; i++) s2 += 'z';
+			count(s1 + ' ' + s2);
+			count(s2 + ' ' + s1);
+			int n = counter.get_max_phrase(0, s);
+			Assert::AreEqual(-1, n);
+		}
+
 	};
 }
