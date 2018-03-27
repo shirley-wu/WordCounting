@@ -66,13 +66,13 @@ namespace UnitTest1
 			int n;
 			n = counter.get_max_phrase(0, s);
 			Assert::AreEqual(3, n);
-			Assert::AreEqual(string("Hello hihI"), s);
+			Assert::AreEqual(string("Hello HiHi"), s);
 			n = counter.get_max_phrase(1, s);
 			Assert::AreEqual(2, n);
-			Assert::AreEqual(string("hIHi helLO"), s);
+			Assert::AreEqual(string("HiHi Hello"), s);
 			n = counter.get_max_phrase(2, s);
 			Assert::AreEqual(1, n);
-			Assert::AreEqual(string("hello Hello"), s);
+			Assert::AreEqual(string("Hello Hello"), s);
 		}
 
 		TEST_METHOD(TestMultipleFile) {

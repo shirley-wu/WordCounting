@@ -72,7 +72,7 @@ namespace UnitTest1
 			pool.add_phrase(s1.c_str(), s2.c_str());
 			int n = pool.get_max_phrase(0, s);
 			Assert::AreEqual(2, n);
-			Assert::AreEqual(string("Hello world"), s);
+			Assert::AreEqual(string("Hello World"), s);
 		}
 
 		TEST_METHOD(TestSort) {
@@ -113,19 +113,19 @@ namespace UnitTest1
 			Assert::AreEqual(string("Hi Hi"), s);
 			n = pool.get_max_phrase(1, s);
 			Assert::AreEqual(3, n);
-			Assert::AreEqual(string("Hi hiM"), s);
+			Assert::AreEqual(string("Hi Him"), s);
 			n = pool.get_max_phrase(2, s);
 			Assert::AreEqual(2, n);
-			Assert::AreEqual(string("HelLo hello"), s);
+			Assert::AreEqual(string("HelLo HelLo"), s);
 			n = pool.get_max_phrase(3, s);
 			Assert::AreEqual(2, n);
-			Assert::AreEqual(string("Him hi"), s);
+			Assert::AreEqual(string("Him Hi"), s);
 			n = pool.get_max_phrase(4, s);
 			Assert::AreEqual(1, n);
-			Assert::AreEqual(string("Hi hello"), s);
+			Assert::AreEqual(string("Hi HelLo"), s);
 			n = pool.get_max_phrase(5, s);
 			Assert::AreEqual(1, n);
-			Assert::AreEqual(string("hiM HelLo"), s);
+			Assert::AreEqual(string("Him HelLo"), s);
 			n = pool.get_max_phrase(6, s);
 			Assert::AreEqual(-1, n);
 		}
