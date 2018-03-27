@@ -57,13 +57,13 @@ int main(int argc, char **argv) {
 		if (num <= 0) break;
 		result << s << '\t' << num << endl;
 	}
-	cout << "\n\nthe top ten frequency of phrase :\n";
+	cout << "\nthe top ten frequency of phrase :\n";
 	for (int i = 0; i < 10; i++) {
 		int num;
 		string s;
 		num = counter.get_max_phrase(i, s);
 		if (num <= 0) break;
-		result << s << "\t\t" << num << endl;
+		result << s << "\t" << num << endl;
 	}
 
 #ifdef _CALCULATE_HASH

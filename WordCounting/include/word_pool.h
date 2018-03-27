@@ -12,7 +12,7 @@ extern const int HASH_SIZE;
 #endif
 
 
-const int WORD_SIZE = 20;
+const int WORD_SIZE = 100;
 
 
 class WordPool {

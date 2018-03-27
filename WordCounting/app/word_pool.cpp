@@ -1,5 +1,6 @@
 #include <assert.h>
 #include <iostream>
+#include <fstream>
 
 #include "word_pool.h"
 
@@ -57,7 +58,7 @@ pnode *pmax[10] = { NULL };
 bool pool_occupied = false;
 
 
-int my_hash(char *s) {
+int my_hash(const char *s) {
 	unsigned long h = 0;
 	unsigned long g;
 	for (int i = 0; s[i]; i++) {
