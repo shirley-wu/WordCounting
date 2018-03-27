@@ -15,15 +15,21 @@ bool iscontinuer(char c) {
 }
 
 
+bool isdivisor(char c) {
+	return !((('a' <= c && c <= 'z') || ('A' <= c && c <= 'Z') || ('0' <= c && c <= '9')));
+}
+
+
 void WordCounter::count(char c) {
 	if (overflow) {
-		if (!iscontinuer(c)) {
+		if (isdivisor(c)) {
 			exp_len = 0;
 			overflow = false;
 		}
 	}
 	else if (exp_len < 4) {
-		if (isbeginner(c)) {
+		if (exp_len == 0 && !pre_divisor) ;
+		else if (isbeginner(c)) {
 			exp[exp_len++] = c;
 		}
 		else {
@@ -31,19 +37,19 @@ void WordCounter::count(char c) {
 		}
 	}
 	else {
-		if (iscontinuer(c)) {
-			if (exp_len > WORD_SIZE) {
-				overflow = true;
-			}
-			else exp[exp_len++] = c;
-		}
-		else {
+		if (isdivisor(c)) {
 			num++;
 			exp[exp_len] = 0;
 			pre = now;
 			now = pool.add_word(exp);
 			if (pre) pool.add_phrase(pre, now);
 			exp_len = 0;
+		}
+		else {
+			if (exp_len > WORD_SIZE) {
+				overflow = true;
+			}
+			else exp[exp_len++] = c;
 		}
 	}
 	if (c == EOF) {
@@ -53,6 +59,7 @@ void WordCounter::count(char c) {
 		pre = NULL;
 		now = NULL;
 	}
+	pre_divisor = isdivisor(c);
 }
 
 

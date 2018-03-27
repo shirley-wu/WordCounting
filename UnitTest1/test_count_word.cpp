@@ -32,7 +32,7 @@ namespace UnitTest1
 
 		TEST_METHOD(TestNotWord)
 		{
-			string s = "hi hi23iii";
+			string s = "hi hi23iiiiiiii set64Floid";
 			for (unsigned int i = 0; i < s.size(); i++) counter.count(s[i]);
 			counter.count(EOF);
 			Assert::AreEqual(0, counter.get_word_num());

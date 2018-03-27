@@ -15,6 +15,7 @@ private:
 	char exp[WORD_SIZE + 2] = "";
 	int exp_len = 0;
 	bool overflow = false;
+	bool pre_divisor = true;
 
 	WordPool pool;
 
