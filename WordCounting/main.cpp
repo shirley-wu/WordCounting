@@ -1,16 +1,23 @@
 #include <iostream>
+#include <cstdio>
 #include <fstream>
 #include <string>
-
-// #define _MY_DEBUG
-#define _IO_RESULT
+#include <time.h>
 
 #include "traverse_file.h"
 #include "count.h"
 
+// #define _IO_DEBUG
+#define _IO_RESULT
+#define _CALCULATE_TIME
+
 using namespace std;
 
 int main(int argc, char **argv) {
+#ifdef _CALCULATE_TIME
+	clock_t start, finish;
+	start = clock();
+#endif
 	string dir;
 
 	if (argc > 1) dir = string(argv[1]);
@@ -21,9 +28,9 @@ int main(int argc, char **argv) {
 
 	while (traverse.traverse(), traverse.valid()) {
 		fstream in;
-		// cout << traverse.get_filepath() << endl;
 		in.open(traverse.get_filepath());
-#ifdef _MY_DEBUG
+#ifdef _IO_DEBUG
+		cout << traverse.get_filepath() << endl;
 		cout << traverse.get_filepath() << endl;
 		if (in.bad()) {
 			cout << traverse.get_filepath() << " bad" << endl;
@@ -50,7 +57,7 @@ int main(int argc, char **argv) {
 		if (num <= 0) break;
 		result << s << '\t' << num << endl;
 	}
-	cout << "\n\nthe top ten frequency of phrase :";
+	cout << "\n\nthe top ten frequency of phrase :\n";
 	for (int i = 0; i < 10; i++) {
 		int num;
 		string s;
@@ -58,6 +65,24 @@ int main(int argc, char **argv) {
 		if (num <= 0) break;
 		result << s << "\t\t" << num << endl;
 	}
+
+#ifdef _CALCULATE_HASH
+	printf("\n\n\nhash situation\n");
+	printf("word:\n");
+	printf("occupied %d, link %d\n", phrase_occupied, phrase_link);
+	printf("rate of occupation: %f\n", (double)word_occupied / HASH_SIZE);
+	printf("average length of link: %f\n", (double)word_link / word_occupied);
+	printf("phrase:\n");
+	printf("occupied %d, link %d\n", phrase_occupied, phrase_link);
+	printf("rate of occupation: %f\n", (double)phrase_occupied / HASH_SIZE);
+	printf("average length of link: %f\n", (double)phrase_link / phrase_occupied);
+#endif
+
+#ifdef _CALCULATE_TIME
+	finish = clock();
+	cout << "\n\n\ntime situation\n";
+	printf("%f seconds\n", (double)(finish - start)/ CLOCKS_PER_SEC);
+#endif
 
 	return 0;
 }

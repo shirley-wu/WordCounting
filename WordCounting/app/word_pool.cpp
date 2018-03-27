@@ -6,6 +6,14 @@
 using namespace std;
 
 
+#ifdef _CALCULATE_HASH
+long word_occupied = 0;
+long word_link = 0;
+long phrase_occupied = 0;
+long phrase_link = 0;
+#endif
+
+
 const int PHRASE_SIZE = WORD_SIZE * 2 + 5;
 const int HASH_SIZE = 10000000;
 
@@ -106,10 +114,20 @@ void WordPool::add_word(const char * exp) {
 	if (p) {
 		while (strcmp(p->format, format) != 0) {
 			if (p->next) p = p->next;
-			else p = p->next = new wnode(format, exp);
+			else {
+				p = p->next = new wnode(format, exp);
+#ifdef _CALCULATE_HASH
+				word_link++;
+#endif
+			}
 		}
 	}
-	else p = wtable[key] = new wnode(format, exp);
+	else {
+		p = wtable[key] = new wnode(format, exp);
+#ifdef _CALCULATE_HASH
+		word_occupied++;
+#endif
+	}
 	/*if (strlen(p->format) == 0) {
 		cout << "\nformat zero" << endl;
 		if (strlen(p->exp) == 0) {
@@ -170,10 +188,20 @@ void WordPool::add_phrase(const char* exp1, const char *exp2) {
 	if (p) {
 		while (strcmp(p->format, f) != 0) {
 			if (p->next) p = p->next;
-			else p = p->next = new pnode(f, e);
+			else {
+				p = p->next = new pnode(f, e);
+#ifdef _CALCULATE_HASH
+				phrase_link++;
+#endif
+			}
 		}
 	}
-	else p = ptable[key] = new pnode(f, e);
+	else {
+		p = ptable[key] = new pnode(f, e);
+#ifdef _CALCULATE_HASH
+		phrase_link++;
+#endif
+	}
 	assert(strlen(p->format) > 0);
 	assert(strlen(p->exp) > 0);
 

@@ -2,7 +2,18 @@
 #include <string>
 #include <cstring>
 
+#define _CALCULATE_HASH
+#ifdef _CALCULATE_HASH
+extern long word_occupied;
+extern long word_link;
+extern long phrase_occupied;
+extern long phrase_link;
+extern const int HASH_SIZE;
+#endif
+
+
 const int WORD_SIZE = 20;
+
 
 class WordPool {
 
