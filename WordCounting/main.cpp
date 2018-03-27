@@ -14,13 +14,14 @@ int main(int argc, char **argv) {
 	string dir;
 
 	if (argc > 1) dir = string(argv[1]);
+	else return 1;
 	
 	Counter counter;
 	TraverseFile traverse(dir);
 
 	while (traverse.traverse(), traverse.valid()) {
 		fstream in;
-		cout << traverse.get_filepath() << endl;
+		// cout << traverse.get_filepath() << endl;
 		in.open(traverse.get_filepath());
 #ifdef _MY_DEBUG
 		cout << traverse.get_filepath() << endl;

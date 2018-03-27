@@ -15,7 +15,7 @@ namespace UnitTest1
 	private:
 		WordCounter counter;
 		void count(string s) {
-			for (int i = 0; i < s.size(); i++) counter.count(s[i]);
+			for (unsigned int i = 0; i < s.size(); i++) counter.count(s[i]);
 			counter.count(EOF);
 		}
 
@@ -33,12 +33,12 @@ namespace UnitTest1
 		TEST_METHOD(TestNotWord)
 		{
 			string s = "hi hi23iii";
-			for (int i = 0; i < s.size(); i++) counter.count(s[i]);
+			for (unsigned int i = 0; i < s.size(); i++) counter.count(s[i]);
 			counter.count(EOF);
 			Assert::AreEqual(0, counter.get_word_num());
 		}
 
-		TEST_METHOD(TestWord)
+		TEST_METHOD(TestOneWord)
 		{
 			string s = "Hello 233 hello234515 ./,./,/./, hello13415132151 hihihi heLLo HelLo23333";
 			count(s);
@@ -108,6 +108,25 @@ namespace UnitTest1
 			count(s2 + ' ' + s1);
 			int n = counter.get_max_phrase(0, s);
 			Assert::AreEqual(-1, n);
+		}
+
+		TEST_METHOD(TestExactWord) {
+			string s = "", t;
+			for (int i = 0; i < WORD_SIZE; i++) s += 'h';
+			count(s);
+			int n = counter.get_max_word(0, t);
+			Assert::AreEqual(1, n);
+			Assert::AreEqual(s, t);
+		}
+
+		TEST_METHOD(TestExactPhrase) {
+			string s1 = "", s2 = "", s = "";
+			for (int i = 0; i < WORD_SIZE; i++) s1 += 'a';
+			for (int i = 0; i < WORD_SIZE; i++) s2 += 'z';
+			count(s1 + "\\][\\[\\[\\" + s2);
+			int n = counter.get_max_phrase(0, s);
+			Assert::AreEqual(1, n);
+			Assert::AreEqual(s, s1 + ' ' + s2);
 		}
 
 	};

@@ -148,5 +148,25 @@ namespace UnitTest1
 			Assert::AreEqual(-1, n);
 		}
 
+		TEST_METHOD(TestExactWord) {
+			string s = "", t;
+			for (int i = 0; i < WORD_SIZE; i++) s += 'h';
+			pool.add_word(s.c_str());
+			int n = pool.get_max_word(0, t);
+			Assert::AreEqual(1, n);
+			Assert::AreEqual(s, t);
+		}
+
+		TEST_METHOD(TestExactPhrase) {
+			string s1 = "", s2 = "", s = "";
+			for (int i = 0; i < WORD_SIZE; i++) s1 += 'a';
+			for (int i = 0; i < WORD_SIZE; i++) s2 += 'z';
+			pool.add_phrase(s1.c_str(), s2.c_str());
+			pool.add_phrase(s2.c_str(), s1.c_str());
+			int n = pool.get_max_phrase(0, s);
+			Assert::AreEqual(1, n);
+			Assert::AreEqual(s, s1 + ' ' + s2);
+		}
+
 	};
 }

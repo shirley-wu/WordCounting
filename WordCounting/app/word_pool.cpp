@@ -1,11 +1,55 @@
 #include <assert.h>
+#include <iostream>
 
 #include "word_pool.h"
 
 using namespace std;
 
 
-int WordPool::my_hash(char *s) {
+const int PHRASE_SIZE = WORD_SIZE * 2 + 5;
+const int HASH_SIZE = 10000000;
+
+
+struct wnode {
+	char format[WORD_SIZE + 2] = "";
+	char exp[WORD_SIZE + 2] = "";
+	int count = 0;
+	wnode *next = NULL;
+
+	wnode(const char* f, const char* e) {
+		if (strlen(f) <= WORD_SIZE || strlen(e) <= WORD_SIZE) {
+			strcpy(format, f);
+			strcpy(exp, e);
+		}
+	}
+	~wnode() { if (next) next->~wnode(); }
+};
+wnode *wtable[HASH_SIZE] = { NULL };
+wnode *wmax[10] = { NULL };
+
+
+struct pnode {
+	char format[PHRASE_SIZE + 2] = "";
+	char exp[PHRASE_SIZE + 2] = "";
+	int count = 0;
+	pnode *next = NULL;
+
+	pnode(const char* f, const char* e) {
+		if (strlen(f) <= PHRASE_SIZE || strlen(e) <= PHRASE_SIZE) {
+			strcpy(format, f);
+			strcpy(exp, e);
+		}
+	}
+	~pnode() { if (next) next->~pnode(); }
+};
+pnode *ptable[HASH_SIZE] = { NULL };
+pnode *pmax[10] = { NULL };
+
+
+bool pool_occupied = false;
+
+
+int my_hash(char *s) {
 	unsigned long h = 0;
 	unsigned long g;
 	for (int i = 0; s[i]; i++) {
@@ -17,6 +61,29 @@ int WordPool::my_hash(char *s) {
 		}
 	}
 	return (h % HASH_SIZE);
+}
+
+
+WordPool::WordPool() {
+	assert(pool_occupied == false);
+	for (int i = 0; i < HASH_SIZE; i++) {
+		wtable[i] = NULL;
+		ptable[i] = NULL;
+	}
+	for (int i = 0; i < 10; i++) {
+		wmax[i] = NULL;
+		pmax[i] = NULL;
+	}
+	pool_occupied = true;
+}
+
+
+WordPool::~WordPool() {
+	for (int i = 0; i < HASH_SIZE; i++) {
+		if (wtable[i]) delete wtable[i];
+		if (ptable[i]) delete ptable[i];
+	}
+	pool_occupied = false;
 }
 
 
@@ -43,6 +110,18 @@ void WordPool::add_word(const char * exp) {
 		}
 	}
 	else p = wtable[key] = new wnode(format, exp);
+	/*if (strlen(p->format) == 0) {
+		cout << "\nformat zero" << endl;
+		if (strlen(p->exp) == 0) {
+			cout << "exp also zero" << endl;
+		}
+		else cout << p->exp << endl;
+	}
+	else if (strlen(p->exp) == 0) {
+		cout << "\nexp zero" << endl;
+		cout << p->format << endl;
+	}
+	else cout << p->format << " ";*/
 	assert(strlen(p->format) > 0);
 	assert(strlen(p->exp) > 0);
 
@@ -76,13 +155,13 @@ void WordPool::add_phrase(const char* exp1, const char *exp2) {
 		return;
 	}
 
-	char f1[WORD_SIZE];
+	char f1[WORD_SIZE + 2];
 	exp_to_format(f1, exp1);
-	char f2[WORD_SIZE];
+	char f2[WORD_SIZE + 2];
 	exp_to_format(f2, exp2);
 
-	char f[PHRASE_SIZE] = { 0 };
-	char e[PHRASE_SIZE] = { 0 };
+	char f[PHRASE_SIZE + 2] = { 0 };
+	char e[PHRASE_SIZE + 2] = { 0 };
 	strcat(f, f1); strcat(f, " "); strcat(f, f2);
 	strcat(e, exp1); strcat(e, " "); strcat(e, exp2);
 
@@ -141,24 +220,5 @@ int WordPool::get_max_phrase(int i, string &e) {
 	else {
 		e = pmax[i]->exp;
 		return pmax[i]->count;
-	}
-}
-
-
-WordPool::WordPool() {
-	for (int i = 0; i < HASH_SIZE; i++) {
-		wtable[i] = NULL;
-		ptable[i] = NULL;
-	}
-	for (int i = 0; i < 10; i++) {
-		wmax[i] = NULL;
-		pmax[i] = NULL;
-	}
-}
-
-WordPool::~WordPool() {
-	for (int i = 0; i < HASH_SIZE; i++) {
-		if (wtable[i]) delete wtable[i];
-		if (ptable[i]) delete ptable[i];
 	}
 }
