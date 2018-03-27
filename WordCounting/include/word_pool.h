@@ -2,57 +2,47 @@
 #include <string>
 #include <cstring>
 
-const int word_size = 100;
+const int WORD_SIZE = 20;
 
 
 class WordPool {
 
 private:
-	static const int hash_size = 100;
+	static const int PHRASE_SIZE = WORD_SIZE * 2 + 5;
+	static const int HASH_SIZE = 100;
 
-	struct word {
-		char format[word_size];
-		char exp[word_size];
-		word(const char * f = NULL, const char * e = NULL) {
-			if (f && e) {
+	struct wnode {
+		char format[WORD_SIZE + 2] = { 0 };
+		char exp[WORD_SIZE + 2] = { 0 };
+		int count = 0;
+		wnode *next = NULL;
+
+		wnode(const char* f, const char* e) {
+			if (strlen(f) < WORD_SIZE || strlen(e) < WORD_SIZE) {
 				strcpy(format, f);
 				strcpy(exp, e);
 			}
-			else {
-				format[0] = 0;
-				exp[0] = 0;
-			}
 		}
-		bool operator<(const word& w) const {
-			return strcmp(format, w.format) < 0;
-		}
-		bool operator==(const word& w) const {
-			return strcmp(format, w.format) == 0;
-		}
-	};
-
-	struct wnode {
-		word w;
-		int count = 0;
-		wnode *next = NULL;
-		wnode(const char* f, const char* e) { w = word(f, e); }
 		~wnode() { if (next) next->~wnode(); }
 	};
-	wnode *wtable[hash_size] = { NULL };
+	wnode *wtable[HASH_SIZE] = { NULL };
 	wnode *wmax[10] = { NULL };
 
 	struct pnode {
-		word w1;
-		word w2;
+		char format[PHRASE_SIZE + 2] = { 0 };
+		char exp[PHRASE_SIZE + 2] = { 0 };
 		int count = 0;
 		pnode *next = NULL;
-		pnode(const char* f1, const char* e1, const char* f2, const char* e2) {
-			w1 = word(f1, e1);
-			w2 = word(f2, e2);
+
+		pnode(const char* f, const char* e) {
+			if (strlen(f) < PHRASE_SIZE || strlen(e) < PHRASE_SIZE) {
+				strcpy(format, f);
+				strcpy(exp, e);
+			}
 		}
 		~pnode() { if (next) next->~pnode(); }
 	};
-	pnode *ptable[hash_size] = { NULL };
+	pnode *ptable[HASH_SIZE] = { NULL };
 	pnode *pmax[10] = { NULL };
 
 	bool yes = false;
