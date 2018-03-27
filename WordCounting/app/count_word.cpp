@@ -40,17 +40,18 @@ void WordCounter::count(char c) {
 		else {
 			num++;
 			exp[exp_len] = 0;
-			pool.add_word(exp);
-			if (strlen(pre) > 0) pool.add_phrase(pre, exp);
-			strcpy(pre, exp);
+			pre = now;
+			now = pool.add_word(exp);
+			if (pre) pool.add_phrase(pre, now);
 			exp_len = 0;
 		}
 	}
 	if (c == EOF) {
-		pre[0] = 0;
 		exp[0] = 0;
 		exp_len = 0;
 		overflow = false;
+		pre = NULL;
+		now = NULL;
 	}
 }
 

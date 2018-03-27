@@ -1,4 +1,3 @@
-#include <assert.h>
 #include <iostream>
 #include <fstream>
 
@@ -19,38 +18,26 @@ const int PHRASE_SIZE = WORD_SIZE * 2 + 5;
 const int HASH_SIZE = 10000000;
 
 
-struct wnode {
-	char format[WORD_SIZE + 2] = "";
-	char exp[WORD_SIZE + 2] = "";
-	int count = 0;
-	wnode *next = NULL;
-
-	wnode(const char* f, const char* e) {
-		if (strlen(f) <= WORD_SIZE || strlen(e) <= WORD_SIZE) {
-			strcpy(format, f);
-			strcpy(exp, e);
-		}
-	}
-	~wnode() { if (next) next->~wnode(); }
-};
-wnode *wtable[HASH_SIZE] = { NULL };
-wnode *wmax[10] = { NULL };
-
-
 struct pnode {
-	char format[PHRASE_SIZE + 2] = "";
-	char exp[PHRASE_SIZE + 2] = "";
+	const wnode *w1;
+	const wnode *w2;
+	char format[PHRASE_SIZE + 2];
 	int count = 0;
 	pnode *next = NULL;
 
-	pnode(const char* f, const char* e) {
-		if (strlen(f) <= PHRASE_SIZE || strlen(e) <= PHRASE_SIZE) {
-			strcpy(format, f);
-			strcpy(exp, e);
-		}
+	pnode(const wnode *pw1, const wnode *pw2, const char * f) {
+		assert(strlen(f) <= PHRASE_SIZE + 2);
+		w1 = pw1;
+		w2 = pw2;
+		strcpy(format, f);
 	}
 	~pnode() { if (next) next->~pnode(); }
 };
+
+
+wnode *wtable[HASH_SIZE] = { NULL };
+wnode *wmax[10] = { NULL };
+
 pnode *ptable[HASH_SIZE] = { NULL };
 pnode *pmax[10] = { NULL };
 
@@ -104,8 +91,8 @@ void WordPool::exp_to_format(char f[], const char e[]) {
 }
 
 
-void WordPool::add_word(const char * exp) {
-	if (strlen(exp) > WORD_SIZE) return;
+wnode * WordPool::add_word(const char * exp) {
+	if (strlen(exp) > WORD_SIZE) return NULL;
 
 	char format[WORD_SIZE + 2];
 	exp_to_format(format, exp);
@@ -141,8 +128,6 @@ void WordPool::add_word(const char * exp) {
 		cout << p->format << endl;
 	}
 	else cout << p->format << " ";*/
-	assert(strlen(p->format) > 0);
-	assert(strlen(p->exp) > 0);
 
 	p->count++;
 	if(strcmp(p->exp, exp) > 0) strcpy(p->exp, exp);
@@ -150,7 +135,7 @@ void WordPool::add_word(const char * exp) {
 	for (int i = 0; i < 10; i++) {
 		if (wmax[i] == NULL || wmax[i] == p) {
 			wmax[i] = p;
-			return;
+			break;
 		}
 		else {
 			int ci = wmax[i]->count;
@@ -162,27 +147,22 @@ void WordPool::add_word(const char * exp) {
 					wmax[j] = wmax[j - 1];
 				}
 				wmax[i] = p;
-				return;
+				break;
 			}
 		}
 	}
+
+	return p;
 }
 
 
-void WordPool::add_phrase(const char* exp1, const char *exp2) {
-	if (strlen(exp1) > WORD_SIZE || strlen(exp2) > WORD_SIZE) {
-		return;
-	}
+void WordPool::add_phrase(const wnode * pw1, const wnode * pw2) {
+	if (pw1 == NULL || pw2 == NULL) return;
 
-	char f1[WORD_SIZE + 2];
-	exp_to_format(f1, exp1);
-	char f2[WORD_SIZE + 2];
-	exp_to_format(f2, exp2);
-
-	char f[PHRASE_SIZE + 2] = { 0 };
-	char e[PHRASE_SIZE + 2] = { 0 };
-	strcat(f, f1); strcat(f, " "); strcat(f, f2);
-	strcat(e, exp1); strcat(e, " "); strcat(e, exp2);
+	char f[PHRASE_SIZE + 2] = "";
+	strcat(f, pw1->format);
+	strcat(f, " ");
+	strcat(f, pw2->format);
 
 	int key = my_hash(f);
 	pnode * p = ptable[key];
@@ -190,7 +170,7 @@ void WordPool::add_phrase(const char* exp1, const char *exp2) {
 		while (strcmp(p->format, f) != 0) {
 			if (p->next) p = p->next;
 			else {
-				p = p->next = new pnode(f, e);
+				p = p->next = new pnode(pw1, pw2, f);
 #ifdef _CALCULATE_HASH
 				phrase_link++;
 #endif
@@ -198,16 +178,13 @@ void WordPool::add_phrase(const char* exp1, const char *exp2) {
 		}
 	}
 	else {
-		p = ptable[key] = new pnode(f, e);
+		p = ptable[key] = new pnode(pw1, pw2, f);
 #ifdef _CALCULATE_HASH
 		phrase_occupied++;
 #endif
 	}
-	assert(strlen(p->format) > 0);
-	assert(strlen(p->exp) > 0);
 
 	p->count++;
-	if (strcmp(p->exp, e) > 0) strcpy(p->exp, e);
 
 	for (int i = 0; i < 10; i++) {
 		if (pmax[i] == NULL || pmax[i] == p) {
@@ -247,7 +224,7 @@ int WordPool::get_max_phrase(int i, string &e) {
 		return -1;
 	}
 	else {
-		e = pmax[i]->exp;
+		e = string(pmax[i]->w1->exp) + ' ' + string(pmax[i]->w2->exp);
 		return pmax[i]->count;
 	}
 }

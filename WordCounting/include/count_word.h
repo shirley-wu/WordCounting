@@ -9,7 +9,8 @@ class WordCounter {
 private:
 
 	int num = 0;
-	char pre[WORD_SIZE + 2] = "";
+	wnode *pre = NULL;
+	wnode *now = NULL;
 
 	char exp[WORD_SIZE + 2] = "";
 	int exp_len = 0;

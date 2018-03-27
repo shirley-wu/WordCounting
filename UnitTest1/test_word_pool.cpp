@@ -47,58 +47,29 @@ namespace UnitTest1
 			}
 		}
 
-		TEST_METHOD(TestSameWord)
-		{
-			string s;
-			s = "heLlo";
-			pool.add_word(s.c_str());
-			s = "Hello";
-			pool.add_word(s.c_str());
-			s = "hello233";
-			pool.add_word(s.c_str());
-			int n;
-			n = pool.get_max_word(0, s);
-			Assert::AreEqual(3, n);
-			Assert::AreEqual(string("Hello"), s);
+		TEST_METHOD(TestSameWord) {
+			wnode *w11, *w12, *w21, *w22, *w31, *w32;
+			w11 = pool.add_word("hi");
+			w12 = pool.add_word("Hi");
+			w21 = pool.add_word("hellO");
+			w22 = pool.add_word("HelLo");
+			w31 = pool.add_word("Him");
+			w32 = pool.add_word("hiM");
+			Assert::AreEqual((long int)w11, (long int)w12);
+			Assert::AreEqual((long int)w21, (long int)w22);
+			Assert::AreEqual((long int)w31, (long int)w32);
 		}
 
-		TEST_METHOD(TestPhrase) {
-			string s1, s2, s;
-			s1 = "hello";
-			s2 = "World";
-			pool.add_phrase(s1.c_str(), s2.c_str());
-			s1 = "Hello";
-			s2 = "world";
-			pool.add_phrase(s1.c_str(), s2.c_str());
-			int n = pool.get_max_phrase(0, s);
-			Assert::AreEqual(2, n);
-			Assert::AreEqual(string("Hello World"), s);
-		}
-
-		TEST_METHOD(TestSort) {
-			string s11 = "hi";
-			string s12 = "Hi";
-			string s21 = "hello";
-			string s22 = "HelLo";
-			string s31 = "Him";
-			string s32 = "hiM";
-			string s;
-			pool.add_word(s11.c_str()); pool.add_word(s12.c_str());
-			pool.add_word(s21.c_str()); pool.add_word(s22.c_str());
-			pool.add_word(s31.c_str()); pool.add_word(s32.c_str());
-			pool.add_phrase(s11.c_str(), s12.c_str()); pool.add_phrase(s12.c_str(), s12.c_str()); pool.add_phrase(s11.c_str(), s11.c_str());
-			// 11
-			pool.add_phrase(s11.c_str(), s31.c_str()); pool.add_phrase(s12.c_str(), s32.c_str()); pool.add_phrase(s11.c_str(), s32.c_str());
-			// 13
-			pool.add_phrase(s31.c_str(), s11.c_str()); pool.add_phrase(s32.c_str(), s12.c_str());
-			// 31
-			pool.add_phrase(s22.c_str(), s21.c_str()); pool.add_phrase(s21.c_str(), s22.c_str());
-			// 22
-			pool.add_phrase(s12.c_str(), s21.c_str());
-			// 12
-			pool.add_phrase(s32.c_str(), s22.c_str());
-			// 32
+		TEST_METHOD(TestSortWord) {
+			wnode *w11, *w12, *w21, *w22, *w31, *w32;
+			w11 = pool.add_word("hi");
+			w12 = pool.add_word("Hi");
+			w21 = pool.add_word("hellO");
+			w22 = pool.add_word("HelLo");
+			w31 = pool.add_word("Him");
+			w32 = pool.add_word("hiM");
 			int n;
+			string s;
 			n = pool.get_max_word(0, s);
 			Assert::AreEqual(2, n);
 			Assert::AreEqual(string("HelLo"), s);
@@ -108,6 +79,43 @@ namespace UnitTest1
 			n = pool.get_max_word(2, s);
 			Assert::AreEqual(2, n);
 			Assert::AreEqual(string("Him"), s);
+		}
+
+		TEST_METHOD(TestLongWord) {
+			string s = "";
+			for (int i = 0; i < WORD_SIZE + 1; i++) s += 'h';
+			pool.add_word(s.c_str());
+			int n = pool.get_max_word(0, s);
+			Assert::AreEqual(-1, n);
+		}
+
+		TEST_METHOD(TestPhrase) {
+			string s;
+			wnode *w1, *w2;
+			w1 = pool.add_word("hello");
+			w2 = pool.add_word("World");
+			pool.add_phrase(w1, w2);
+			w1 = pool.add_word("Hello");
+			w2 = pool.add_word("world");
+			pool.add_phrase(w1, w2);
+			int n = pool.get_max_phrase(0, s);
+			Assert::AreEqual(2, n);
+			Assert::AreEqual(string("Hello World"), s);
+		}
+
+		TEST_METHOD(TestSortPhrase) {
+			wnode *w1, *w2, *w3;
+			w1 = pool.add_word("Hi");
+			w2 = pool.add_word("HelLo");
+			w3 = pool.add_word("Him");
+			pool.add_phrase(w1, w1); pool.add_phrase(w1, w1); pool.add_phrase(w1, w1);
+			pool.add_phrase(w1, w3); pool.add_phrase(w1, w3); pool.add_phrase(w1, w3);
+			pool.add_phrase(w3, w1); pool.add_phrase(w3, w1);
+			pool.add_phrase(w2, w2); pool.add_phrase(w2, w2);
+			pool.add_phrase(w1, w2);
+			pool.add_phrase(w3, w2);
+			int n;
+			string s;
 			n = pool.get_max_phrase(0, s);
 			Assert::AreEqual(3, n);
 			Assert::AreEqual(string("Hi Hi"), s);
@@ -130,20 +138,14 @@ namespace UnitTest1
 			Assert::AreEqual(-1, n);
 		}
 
-		TEST_METHOD(TestLongWord) {
-			string s = "";
-			for (int i = 0; i < WORD_SIZE + 1; i++) s += 'h';
-			pool.add_word(s.c_str());
-			int n = pool.get_max_word(0, s);
-			Assert::AreEqual(-1, n);
-		}
-
 		TEST_METHOD(TestLongPhrase) {
 			string s1 = "", s2 = "", s = "";
 			for (int i = 0; i < WORD_SIZE / 2; i++) s1 += 'a';
 			for (int i = 0; i < WORD_SIZE + 4; i++) s2 += 'z';
-			pool.add_phrase(s1.c_str(), s2.c_str());
-			pool.add_phrase(s2.c_str(), s1.c_str());
+			wnode * w1 = pool.add_word(s1.c_str());
+			wnode * w2 = pool.add_word(s2.c_str());
+			pool.add_phrase(w1, w2);
+			pool.add_phrase(w2, w1);
 			int n = pool.get_max_phrase(0, s);
 			Assert::AreEqual(-1, n);
 		}
@@ -161,11 +163,17 @@ namespace UnitTest1
 			string s1 = "", s2 = "", s = "";
 			for (int i = 0; i < WORD_SIZE; i++) s1 += 'a';
 			for (int i = 0; i < WORD_SIZE; i++) s2 += 'z';
-			pool.add_phrase(s1.c_str(), s2.c_str());
-			pool.add_phrase(s2.c_str(), s1.c_str());
-			int n = pool.get_max_phrase(0, s);
+			wnode * w1 = pool.add_word(s1.c_str());
+			wnode * w2 = pool.add_word(s2.c_str());
+			pool.add_phrase(w1, w2);
+			pool.add_phrase(w2, w1);
+			int n;
+			n = pool.get_max_phrase(0, s);
 			Assert::AreEqual(1, n);
 			Assert::AreEqual(s, s1 + ' ' + s2);
+			n = pool.get_max_phrase(1, s);
+			Assert::AreEqual(1, n);
+			Assert::AreEqual(s, s2 + ' ' + s1);
 		}
 
 	};
