@@ -199,7 +199,7 @@ void WordPool::add_phrase(const char* exp1, const char *exp2) {
 	else {
 		p = ptable[key] = new pnode(f, e);
 #ifdef _CALCULATE_HASH
-		phrase_link++;
+		phrase_occupied++;
 #endif
 	}
 	assert(strlen(p->format) > 0);

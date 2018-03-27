@@ -69,7 +69,7 @@ int main(int argc, char **argv) {
 #ifdef _CALCULATE_HASH
 	printf("\n\n\nhash situation\n");
 	printf("word:\n");
-	printf("occupied %d, link %d\n", phrase_occupied, phrase_link);
+	printf("occupied %d, link %d\n", word_occupied, word_link);
 	printf("rate of occupation: %f\n", (double)word_occupied / HASH_SIZE);
 	printf("average length of link: %f\n", (double)word_link / word_occupied);
 	printf("phrase:\n");
