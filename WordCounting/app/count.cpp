@@ -7,7 +7,7 @@ using namespace std;
 
 bool Counter::count(string filepath) {
 	ifstream in;
-	in.open(filepath.c_str());
+	in.open(filepath.c_str(), ios::in);
 	if (in.bad()) return false;
 
 	char c;
@@ -18,6 +18,7 @@ bool Counter::count(string filepath) {
 	}
 	cc.count_eof();
 	wc.count_eof();
+	in.close();
 
 	return true;
 }
