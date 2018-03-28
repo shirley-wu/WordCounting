@@ -1,5 +1,6 @@
 #include <iostream>
 #include <cstdio>
+#include <fstream>
 #include <string>
 #include <time.h>
 
@@ -7,8 +8,8 @@
 #include "count.h"
 
 // #define _IO_DEBUG
-#define _IO_RESULT
-#define _CALCULATE_TIME
+// #define _IO_RESULT
+// #define _CALCULATE_TIME
 
 using namespace std;
 
@@ -36,7 +37,7 @@ int main(int argc, char **argv) {
 #ifdef _IO_RESULT
 	ostream& result = cout;
 #else
-	ofstream result("result.txt");
+	ofstream result("D:\\result.txt", ios::ate | ios::out);
 #endif
 	result << "char_number :" << counter.get_char_num() << endl;
 	result << "line_number :" << counter.get_line_num() << endl;
@@ -57,6 +58,9 @@ int main(int argc, char **argv) {
 		if (num <= 0) break;
 		result << s << "\t" << num << endl;
 	}
+#ifdef _IO_RESULT
+		result.close();
+#endif
 
 #ifdef _CALCULATE_HASH
 	printf("\n\n\nhash situation\n");
