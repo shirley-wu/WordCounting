@@ -11,7 +11,7 @@ private:
 	WordCounter wc;
 
 public:
-	bool count(std::istream& in);
+	bool count(std::string filepath);
 	int get_char_num();
 	int get_line_num();
 	int get_word_num();

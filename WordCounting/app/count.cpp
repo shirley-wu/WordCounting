@@ -1,9 +1,13 @@
+#include <fstream>
+
 #include "count.h"
 
 using namespace std;
 
 
-bool Counter::count(istream& in) {
+bool Counter::count(string filepath) {
+	ifstream in;
+	in.open(filepath.c_str());
 	if (in.bad()) return false;
 
 	char c;

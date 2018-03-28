@@ -1,6 +1,5 @@
 #include <iostream>
 #include <cstdio>
-#include <fstream>
 #include <string>
 #include <time.h>
 
@@ -27,18 +26,11 @@ int main(int argc, char **argv) {
 	TraverseFile traverse(dir);
 
 	while (traverse.traverse(), traverse.valid()) {
-		fstream in;
-		in.open(traverse.get_filepath());
+		string filepath = traverse.get_filepath();
 #ifdef _IO_DEBUG
-		cout << traverse.get_filepath() << endl;
-		cout << traverse.get_filepath() << endl;
-		if (in.bad()) {
-			cout << traverse.get_filepath() << " bad" << endl;
-			cin.get();
-		}
+		cout << filepath << endl;
 #endif
-		counter.count(in);
-		in.close();
+		counter.count(filepath);
 	}
 
 #ifdef _IO_RESULT
