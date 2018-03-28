@@ -14,7 +14,7 @@ extern long phrase_link;
 
 const int WORD_SIZE = 100;
 const int PHRASE_SIZE = WORD_SIZE * 2 + 5;
-const int HASH_SIZE = 10000000;
+const int HASH_SIZE = 800000;
 
 
 struct wnode {
