@@ -11,13 +11,15 @@ long word_occupied = 0;
 long word_link = 0;
 long phrase_occupied = 0;
 long phrase_link = 0;
+int word_max_link = 0;
+int phrase_max_link = 0;
 #endif
 
 
-wnode *wtable[HASH_SIZE] = { NULL };
+wnode *wtable[WORD_HASH_SIZE] = { NULL };
 const wnode *wmax[10] = { NULL };
 
-pnode *ptable[HASH_SIZE] = { NULL };
+pnode *ptable[PHRASE_HASH_SIZE] = { NULL };
 const pnode *pmax[10] = { NULL };
 
 
@@ -26,10 +28,10 @@ bool word_sorted = false;
 bool phrase_sorted = false;
 
 
-int my_hash(const char *s) {
+int elfhash(const string& s) {
 	unsigned long h = 0;
 	unsigned long g;
-	for (int i = 0; s[i]; i++) {
+	for (int i = 0; i < s.size(); i++) {
 		h = (h << 4) + s[i];
 		g = h & 0xF0000000L;
 		if (g) {
@@ -37,14 +39,55 @@ int my_hash(const char *s) {
 			h &= ~g;
 		}
 	}
-	return (h % HASH_SIZE);
+	return (h & 0x7FFFFFFF);
 }
+
+
+int jshash(const string& s) {
+	int hash = 0;
+
+	for (int i = 0; i < s.size(); i++) {
+		hash ^= (hash << 5) + (int)s[i] + (hash >> 2);
+	}
+
+	return (hash & 0x7FFFFFFF);
+}
+
+
+int fnvhash(const string& s) {
+	int fnvprime = 0x811C9DC5;
+	int hash = 0;
+
+	for (int i = 0; i < s.size(); i++) {
+		hash *= fnvprime;
+		hash ^= (int)s[i];
+	}
+
+	return hash & 0x7FFFFFFF;
+}
+
+
+int bknrhash(const string& s){
+	unsigned int seed = 131; // 31 131 1313 13131 131313 etc..
+	unsigned int hash = 0;
+
+	for (int i = 0; i < s.size(); i++) {
+		hash = hash * seed + s[i];
+	}
+
+	return (hash & 0x7FFFFFFF);
+}
+
+
+int (*my_hash)(const string& s) = jshash;
 
 
 WordPool::WordPool() {
 	assert(pool_occupied == false);
-	for (int i = 0; i < HASH_SIZE; i++) {
+	for (int i = 0; i < WORD_HASH_SIZE; i++) {
 		wtable[i] = NULL;
+	}
+	for (int i = 0; i < PHRASE_HASH_SIZE; i++) {
 		ptable[i] = NULL;
 	}
 	for (int i = 0; i < 10; i++) {
@@ -56,8 +99,10 @@ WordPool::WordPool() {
 
 
 WordPool::~WordPool() {
-	for (int i = 0; i < HASH_SIZE; i++) {
+	for (int i = 0; i < WORD_HASH_SIZE; i++) {
 		if (wtable[i]) delete wtable[i];
+	}
+	for (int i = 0; i < PHRASE_HASH_SIZE; i++) {
 		if (ptable[i]) delete ptable[i];
 	}
 	pool_occupied = false;
@@ -66,29 +111,35 @@ WordPool::~WordPool() {
 }
 
 
-void WordPool::exp_to_format(char f[], const char e[]) {
-	int j = strlen(e) - 1;
+string WordPool::exp_to_format(const string& e) {
+	string f = "";
+	int j = e.size() - 1;
 	while (isdigit(e[j])) j--;
-	for (int i = 0; i <= j; i++) f[i] = tolower(e[i]);
-	f[j+1] = 0;
+	for (int i = 0; i <= j; i++) f += tolower(e[i]);
+	return f;
 }
 
 
-wnode * WordPool::add_word(const char * exp) {
-	if (strlen(exp) > WORD_SIZE) return NULL;
+wnode * WordPool::add_word(const char * e) {
+	if (strlen(e) > WORD_SIZE) return NULL;
 
-	char format[WORD_SIZE + 2];
-	exp_to_format(format, exp);
+	string exp = e;
+	string format = exp_to_format(exp);
 
-	int key = my_hash(format);
+	int key = my_hash(format) % WORD_HASH_SIZE;
 	wnode * p = wtable[key];
 	if (p) {
-		while (strcmp(p->format, format) != 0) {
+		while (p->format != format) {
 			if (p->next) p = p->next;
 			else {
+#ifdef _CALCULATE_HASH
+				int d = p->depth;
+#endif
 				p = p->next = new wnode(format, exp);
 #ifdef _CALCULATE_HASH
 				word_link++;
+				p->depth = d + 1;
+				word_max_link = word_max_link > p->depth ? word_max_link : p->depth;
 #endif
 			}
 		}
@@ -97,10 +148,11 @@ wnode * WordPool::add_word(const char * exp) {
 		p = wtable[key] = new wnode(format, exp);
 #ifdef _CALCULATE_HASH
 		word_occupied++;
+		p->depth = 0;
 #endif
 	}
 	p->count++;
-	if (strcmp(p->exp, exp) > 0) strcpy(p->exp, exp);
+	if (p->exp > exp) p->exp = exp;
 
 	return p;
 }
@@ -109,20 +161,24 @@ wnode * WordPool::add_word(const char * exp) {
 void WordPool::add_phrase(const wnode * pw1, const wnode * pw2) {
 	if (pw1 == NULL || pw2 == NULL) return;
 
-	char f[PHRASE_SIZE + 2] = "";
-	strcat(f, pw1->format);
-	strcat(f, " ");
-	strcat(f, pw2->format);
+	string f = pw1->format;
+	f += " ";
+	f += pw2->format;
 
-	int key = my_hash(f);
+	int key = my_hash(f) % PHRASE_HASH_SIZE;
 	pnode * p = ptable[key];
 	if (p) {
-		while (strcmp(p->format, f) != 0) {
+		while (p->format != f) {
 			if (p->next) p = p->next;
 			else {
+#ifdef _CALCULATE_HASH
+				int d = p->depth;
+#endif
 				p = p->next = new pnode(pw1, pw2, f);
 #ifdef _CALCULATE_HASH
 				phrase_link++;
+				p->depth = d + 1;
+				phrase_max_link = phrase_max_link > p->depth ? phrase_max_link : p->depth;
 #endif
 			}
 		}
@@ -131,6 +187,7 @@ void WordPool::add_phrase(const wnode * pw1, const wnode * pw2) {
 		p = ptable[key] = new pnode(pw1, pw2, f);
 #ifdef _CALCULATE_HASH
 		phrase_occupied++;
+		p->depth = 0;
 #endif
 	}
 	p->count++;
@@ -146,7 +203,7 @@ void WordPool::word_sort_insert(const wnode * p) {
 		else {
 			int ci = wmax[i]->count;
 			int cp = p->count;
-			if ((ci < cp) || (ci == cp && strcmp(p->format, wmax[i]->format) < 0)) {
+			if ((ci < cp) || (ci == cp && p->format < wmax[i]->format)) {
 				int j;
 				for (j = i; j < 10 - 1; j++) if (wmax[j] == p) break;
 				for (; j > i; j--) {
@@ -162,7 +219,7 @@ void WordPool::word_sort_insert(const wnode * p) {
 
 void WordPool::word_sort() {
 	const wnode * p;
-	for (int i = 0; i < HASH_SIZE; i++) {
+	for (int i = 0; i < WORD_HASH_SIZE; i++) {
 		for (p = wtable[i]; p; p = p->next) word_sort_insert(p);
 	}
 }
@@ -192,7 +249,7 @@ void WordPool::phrase_sort_insert(const pnode * p) {
 		else {
 			int ci = pmax[i]->count;
 			int cp = p->count;
-			if ((ci < cp) || (ci == cp && strcmp(p->format, pmax[i]->format) < 0)) {
+			if ((ci < cp) || (ci == cp && p->format < pmax[i]->format)) {
 				int j;
 				for (j = i; j < 10 - 1; j++) if (pmax[j] == p) break;
 				for (; j > i; j--) {
@@ -208,7 +265,7 @@ void WordPool::phrase_sort_insert(const pnode * p) {
 
 void WordPool::phrase_sort() {
 	const pnode * p;
-	for (int i = 0; i < HASH_SIZE; i++) {
+	for (int i = 0; i < PHRASE_HASH_SIZE; i++) {
 		for (p = ptable[i]; p; p = p->next) phrase_sort_insert(p);
 	}
 }

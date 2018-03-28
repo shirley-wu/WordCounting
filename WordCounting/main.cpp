@@ -60,14 +60,16 @@ int main(int argc, char **argv) {
 
 #ifdef _CALCULATE_HASH
 	printf("\n\n\nhash situation\n");
-	printf("word:\n");
+	printf("\nword:\n");
 	printf("occupied %d, link %d\n", word_occupied, word_link);
-	printf("rate of occupation: %f\n", (double)word_occupied / HASH_SIZE);
+	printf("rate of occupation: %f\n", (double)word_occupied / WORD_HASH_SIZE);
 	printf("average length of link: %f\n", (double)word_link / word_occupied);
-	printf("phrase:\n");
+	printf("max link length: %d\n", word_max_link);
+	printf("\nphrase:\n");
 	printf("occupied %d, link %d\n", phrase_occupied, phrase_link);
-	printf("rate of occupation: %f\n", (double)phrase_occupied / HASH_SIZE);
+	printf("rate of occupation: %f\n", (double)phrase_occupied / PHRASE_HASH_SIZE);
 	printf("average length of link: %f\n", (double)phrase_link / phrase_occupied);
+	printf("max link length: %d\n", phrase_max_link);
 #endif
 
 #ifdef _CALCULATE_TIME
