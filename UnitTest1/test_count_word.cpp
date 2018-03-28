@@ -4,8 +4,8 @@
 #include <string>
 
 #include "count_word.h"
-using std::string;
 
+using std::string;
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 namespace UnitTest1
@@ -16,7 +16,7 @@ namespace UnitTest1
 		WordCounter counter;
 		void count(string s) {
 			for (unsigned int i = 0; i < s.size(); i++) counter.count(s[i]);
-			counter.count(EOF);
+			counter.count_eof();
 		}
 
 	public:
@@ -126,7 +126,29 @@ namespace UnitTest1
 			count(s1 + "\\][\\[\\[\\" + s2);
 			int n = counter.get_max_phrase(0, s);
 			Assert::AreEqual(1, n);
-			Assert::AreEqual(s, s1 + ' ' + s2);
+			Assert::AreEqual(s1 + ' ' + s2, s);
+		}
+
+		TEST_METHOD(TestEOF) {
+			string s;
+			count("abc");
+			count("abcdeee phrase");
+			count("isnotaphrase");
+			int n;
+			n = counter.get_max_word(0, s);
+			Assert::AreEqual(1, n);
+			Assert::AreEqual(string("abcdeee"), s);
+			n = counter.get_max_word(1, s);
+			Assert::AreEqual(1, n);
+			Assert::AreEqual(string("isnotaphrase"), s);
+			n = counter.get_max_word(2, s);
+			Assert::AreEqual(1, n);
+			Assert::AreEqual(string("phrase"), s);
+			n = counter.get_max_phrase(0, s);
+			Assert::AreEqual(1, n);
+			Assert::AreEqual(string("abcdeee phrase"), s);
+			n = counter.get_max_phrase(1, s);
+			Assert::AreEqual(-1, n);
 		}
 
 	};

@@ -1,8 +1,11 @@
 #include "stdafx.h"
 #include "CppUnitTest.h"
 
+#include <string>
+
 #include "count_char.h"
 
+using std::string;
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 namespace UnitTest1
@@ -11,51 +14,49 @@ namespace UnitTest1
 	{
 	private:
 		CharCounter counter;
+		void count(string s) {
+			for (unsigned int i = 0; i < s.size(); i++) counter.count(s[i]);
+			counter.count_eof();
+		}
 
 	public:
 		
 		TEST_METHOD(TestEmptyStream)
 		{
-			char s[] = "";
-			for (int i = 0; i < strlen(s); i++) counter.count(s[i]);
-			counter.count(EOF);
+			count("");
 			Assert::AreEqual(counter.get_char_num(), 0);
 			Assert::AreEqual(counter.get_line_num(), 1);
 		}
 
 		TEST_METHOD(TestNormalStream)
 		{
-			char s[] = "hi hello\nhello\n\n";
-			for (int i = 0; i < strlen(s); i++) counter.count(s[i]);
-			counter.count(EOF);
-			Assert::AreEqual(counter.get_char_num(), 13);
-			Assert::AreEqual(counter.get_line_num(), 4);
+			count("hi hello\nhello\n\n");
+			Assert::AreEqual(13, counter.get_char_num());
+			Assert::AreEqual(4, counter.get_line_num());
 		}
 
 		TEST_METHOD(TestStrangeChar)
 		{
-			char s[130];
-			for (int i = 0; i < 129; i++) s[i] = char(i + 127);
-			for (int i = 0; i < 129; i++) counter.count(s[i]);
-			counter.count('\0');
-			counter.count(EOF);
-			Assert::AreEqual(counter.get_char_num(), 0);
-			Assert::AreEqual(counter.get_line_num(), 2);
+			for (int i = 0; i < 129; i++) {
+				counter.count(char(127 + i));
+				counter.count(-1);
+			}
+			for (int i = 0; i < 32; i++) {
+				counter.count(char(i));
+				counter.count(-1);
+			}
+			counter.count_eof();
+			Assert::AreEqual(0, counter.get_char_num());
+			Assert::AreEqual(2, counter.get_line_num());
 		}
 
 		TEST_METHOD(TestMultiple)
 		{
-			char s1[] = "hi, this\n\n\n";
-			char s2[] = "is tonn";
-			char s3[] = "ny....";
-			for (int i = 0; i < strlen(s1); i++) counter.count(s1[i]);
-			counter.count(EOF);
-			for (int i = 0; i < strlen(s2); i++) counter.count(s2[i]);
-			counter.count(EOF);
-			for (int i = 0; i < strlen(s3); i++) counter.count(s3[i]);
-			counter.count(EOF);
-			Assert::AreEqual(counter.get_char_num(), 21);
-			Assert::AreEqual(counter.get_line_num(), 6);
+			count("hi, this\n\n\n");
+			count("is tonn");
+			count("ny....");
+			Assert::AreEqual(21, counter.get_char_num());
+			Assert::AreEqual(6, counter.get_line_num());
 		}
 
 	};

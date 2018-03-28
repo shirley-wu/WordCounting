@@ -52,6 +52,15 @@ void WordCounter::count(char c) {
 
 
 void WordCounter::count_eof() {
+	if (!overflow && exp_len >= 4) {
+		num++;
+		exp[exp_len] = 0;
+		pre = now;
+		now = pool.add_word(exp);
+		if (pre) pool.add_phrase(pre, now);
+		exp_len = 0;
+	}
+	pre_divisor = true;
 	exp[0] = 0;
 	exp_len = 0;
 	overflow = false;
