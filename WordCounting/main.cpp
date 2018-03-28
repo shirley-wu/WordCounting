@@ -42,7 +42,7 @@ int main(int argc, char **argv) {
 	result << "char_number :" << counter.get_char_num() << endl;
 	result << "line_number :" << counter.get_line_num() << endl;
 	result << "word_number :" << counter.get_word_num() << endl;
-	cout << "\nthe top ten frequency of word :\n";
+	result << "\nthe top ten frequency of word :\n";
 	for (int i = 0; i < 10; i++) {
 		int num;
 		string s;
@@ -50,7 +50,7 @@ int main(int argc, char **argv) {
 		if (num <= 0) break;
 		result << s << '\t' << num << endl;
 	}
-	cout << "\nthe top ten frequency of phrase :\n";
+	result << "\nthe top ten frequency of phrase :\n";
 	for (int i = 0; i < 10; i++) {
 		int num;
 		string s;
