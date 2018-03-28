@@ -13,15 +13,17 @@ CharCounter::CharCounter() {
 
 void CharCounter::count(char c) {
 	// TODO: different from official
-	if (c == EOF) {
-		line_num++;
-	}
-	else if( c == '\n') {
+	if( c == '\n') {
 		line_num++;
 	}
 	else if(c >= 32 && c <= 126) {
 		char_num++;
 	}
+}
+
+
+void CharCounter::count_eof() {
+	line_num++;
 }
 
 

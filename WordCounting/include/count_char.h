@@ -9,6 +9,7 @@ private:
 public:
 	CharCounter();
 	void count(char c);
+	void count_eof();
 	int get_char_num();
 	int get_line_num();
 

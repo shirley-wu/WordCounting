@@ -11,11 +11,13 @@ bool Counter::count(string filepath) {
 	if (in.bad()) return false;
 
 	char c;
-	do{
+	while (!in.eof()) {
 		c = in.get();
 		cc.count(c);
 		wc.count(c);
-	}while (c != EOF);
+	}
+	cc.count_eof();
+	wc.count_eof();
 
 	return true;
 }

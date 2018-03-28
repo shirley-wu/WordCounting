@@ -21,6 +21,7 @@ private:
 
 public:
 	void count(char c);
+	void count_eof();
 	int get_word_num() { return num; }
 	int get_max_word(int i, std::string& e);
 	int get_max_phrase(int j, std::string& e);

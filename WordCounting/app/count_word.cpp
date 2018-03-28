@@ -10,11 +10,6 @@ bool isbeginner(char c) {
 }
 
 
-bool iscontinuer(char c) {
-	return (('a' <= c && c <= 'z') || ('A' <= c && c <= 'Z') || ('0' <= c && c <= '9'));
-}
-
-
 bool isdivisor(char c) {
 	return !((('a' <= c && c <= 'z') || ('A' <= c && c <= 'Z') || ('0' <= c && c <= '9')));
 }
@@ -52,14 +47,16 @@ void WordCounter::count(char c) {
 			else exp[exp_len++] = c;
 		}
 	}
-	if (c == EOF) {
-		exp[0] = 0;
-		exp_len = 0;
-		overflow = false;
-		pre = NULL;
-		now = NULL;
-	}
 	pre_divisor = isdivisor(c);
+}
+
+
+void WordCounter::count_eof() {
+	exp[0] = 0;
+	exp_len = 0;
+	overflow = false;
+	pre = NULL;
+	now = NULL;
 }
 
 
