@@ -8,7 +8,7 @@
 #include "count.h"
 
 // #define _IO_DEBUG
-// #define _IO_RESULT
+#define _IO_RESULT
 // #define _CALCULATE_TIME
 
 using namespace std;
@@ -58,7 +58,7 @@ int main(int argc, char **argv) {
 		if (num <= 0) break;
 		result << s << "\t" << num << endl;
 	}
-#ifdef _IO_RESULT
+#ifndef _IO_RESULT
 		result.close();
 #endif
 
