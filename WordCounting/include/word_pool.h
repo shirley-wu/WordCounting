@@ -70,7 +70,6 @@ private:
 
 public:
 	WordPool();
-	~WordPool();
 	wnode* add_word(const char* exp);
 	void add_phrase(const wnode* pw1, const wnode* pw2);
 	int get_max_word(int i, std::string &e);

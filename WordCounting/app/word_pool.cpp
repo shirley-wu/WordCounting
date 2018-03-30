@@ -98,19 +98,6 @@ WordPool::WordPool() {
 }
 
 
-WordPool::~WordPool() {
-	for (int i = 0; i < WORD_HASH_SIZE; i++) {
-		if (wtable[i]) delete wtable[i];
-	}
-	for (int i = 0; i < PHRASE_HASH_SIZE; i++) {
-		if (ptable[i]) delete ptable[i];
-	}
-	pool_occupied = false;
-	word_sorted = false;
-	phrase_sorted = false;
-}
-
-
 string WordPool::exp_to_format(const string& e) {
 	string f = "";
 	int j = e.size() - 1;
